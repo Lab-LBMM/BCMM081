@@ -1,8 +1,8 @@
 # Template quarto (gerado com Claude - modelo Opus 5)
 
 ```bash
-quarto preview 01-intro_R.qmd   # recarrega a cada save
-quarto render  01-intro_R.qmd   # gera o HTML final
+quarto preview intro_R.qmd   # recarrega a cada save
+quarto render  intro_R.qmd   # gera o HTML final
 ```
 
 Pacotes R usados: `knitr`, `ggplot2`, `countdown`
