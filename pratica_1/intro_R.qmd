@@ -1,0 +1,234 @@
+---
+title: "BCMM081"
+subtitle: "Prática 1 - Introdução à programação com R"
+author: "Renato Augusto Corrêa dos Santos"
+institute: "IB/UNESP Rio Claro"
+date: today
+date-format: "D [de] MMMM [de] YYYY"
+lang: pt-BR
+format:
+  revealjs:
+    theme: [default, intro_R.scss]
+    slide-number: c/t
+    show-slide-number: all
+    footer: "Prática 1 - Introdução à programação com R"
+    logo: "logo_lbmm_racs_hq.png"
+    incremental: false
+    code-copy: true
+    code-link: true
+    highlight-style: github
+    chalkboard: true      # tecla B abre a lousa; C desenha sobre o slide
+    menu:
+      side: left
+    preview-links: auto
+execute:
+  echo: true
+  warning: false
+  message: false
+knitr:
+  opts_chunk:
+    comment: "#>"
+    collapse: true
+---
+
+## Combinados de hoje {.smaller}
+
+[Roteiro]{.eyebrow}
+
+::: {.incremental}
+- R como calculadora: tudo é uma **operação**
+- Objetos e atribuição: tudo tem um **nome**
+- Vetores: tudo é um **vetor**
+- `data.frame`: a tabela do dia a dia
+- Primeiro gráfico
+:::
+
+::: {.notes}
+Notas do apresentador ficam aqui e aparecem só na sua tela (tecla S).
+Lembrar: pedir para abrirem o RStudio antes de começar.
+:::
+
+# Objetos e atribuição {.divider}
+
+## A seta que faz tudo
+
+```{r}
+#| code-line-numbers: "|1|2|3"
+n_formigas <- 42          # <1>
+n_formigas                # <2>
+n_formigas * 2            # <3>
+```
+
+1. `<-` guarda o valor **dentro** de um nome.
+2. Digitar o nome sozinho **imprime** o valor.
+3. O objeto não muda — o resultado é descartado.
+
+::: {.callout-tip}
+Atalho no RStudio: `Alt` + `-` escreve `<-`.
+:::
+
+## Nomes que o R aceita {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+**Funciona**
+
+```{r}
+#| eval: false
+abundancia
+n_ninhos_2025
+dados.brutos
+```
+:::
+::: {.column width="50%"}
+**Não funciona**
+
+```{r}
+#| eval: false
+2ninhos      # começa com número
+n ninhos     # tem espaço
+TRUE         # nome reservado
+```
+:::
+:::
+
+R diferencia maiúsculas de minúsculas: `Dados` e `dados` são [dois objetos distintos]{.term}.
+
+## Tudo é um vetor
+
+```{r}
+#| output-location: fragment
+comprimento <- c(8.2, 9.1, 7.4, 10.3, 8.8)
+comprimento
+```
+
+. . .
+
+```{r}
+#| output-location: fragment
+mean(comprimento)
+length(comprimento)
+```
+
+. . .
+
+Operações são [vetorizadas]{.term} — sem `for`:
+
+```{r}
+comprimento * 2
+```
+
+## Os quatro tipos que você vai usar {.smaller}
+
+```{r}
+#| code-line-numbers: "|1|2|3|4"
+c(8.2, 9.1)                     # numeric  — medidas
+c("Atta", "Acromyrmex")         # character — nomes, IDs
+c(TRUE, FALSE)                  # logical  — resultado de testes
+factor(c("mata", "borda"))      # factor   — categorias com níveis
+```
+
+. . .
+
+Um vetor guarda **um tipo só**. Misture e o R converte tudo em texto, sem avisar:
+
+```{r}
+c(1, 2, "três")
+```
+
+# Data frames {.divider}
+
+## A tabela
+
+```{r}
+coletas <- data.frame(
+  ninho     = c("N01", "N02", "N03", "N04"),
+  habitat   = c("mata", "borda", "mata", "borda"),
+  operarias = c(120, 85, 143, 61),
+  massa_g   = c(4.2, 3.1, 5.0, 2.4)
+)
+coletas
+```
+
+## Olhando antes de analisar {.smaller}
+
+::: {.columns}
+::: {.column width="55%"}
+```{r}
+#| eval: false
+str(coletas)      # estrutura
+head(coletas)     # primeiras linhas
+summary(coletas)  # resumo por coluna
+nrow(coletas)     # nº de linhas
+names(coletas)    # nomes das colunas
+```
+:::
+::: {.column width="45%"}
+```{r}
+str(coletas)
+```
+:::
+:::
+
+## Recortando a tabela
+
+```{r}
+#| output-location: column-fragment
+#| code-line-numbers: "|1|2|3"
+coletas$operarias
+coletas[coletas$habitat == "mata", ]
+coletas[1:2, c("ninho", "massa_g")]
+```
+
+## Erros que todo mundo comete {.smaller}
+
+::: {.callout-warning appearance="simple"}
+`Error: object 'coletass' not found` → nome digitado errado ou objeto ainda não criado.
+:::
+
+::: {.callout-warning appearance="simple"}
+`Error in ... could not find function "ggplot"` → falta `library(ggplot2)`.
+:::
+
+::: {.callout-warning appearance="simple"}
+O `+` no console → você deixou um parêntese ou aspas abertos. `Esc` cancela.
+:::
+
+## O primeiro gráfico
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.2
+#| output-location: slide
+library(ggplot2)
+
+ggplot(coletas, aes(x = habitat, y = operarias, fill = habitat)) +
+  geom_col(width = .6) +
+  scale_fill_manual(values = c(mata = "#3D6B4A", borda = "#A63D40")) +
+  labs(x = NULL, y = "Operárias coletadas") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+## Sua vez {background-color="#3D6B4A"}
+
+[Exercício · 5 minutos]{.eyebrow}
+
+1. Crie um vetor `massa` com cinco valores.
+2. Calcule a média e o desvio padrão (`sd()`).
+3. Adicione a coluna `densidade` = `operarias / massa_g` em `coletas`.
+
+```{r}
+#| echo: false
+# install.packages("countdown")
+countdown::countdown(minutes = 5, seconds = 0, top = 0, right = 0)
+```
+
+## Para a próxima semana {.smaller}
+
+- Relatório de aula prática
+
+
+## Referências e recursos {.smaller}
+
+- **R Crash Course for Biologists: An Introduction to R for bioinformatics and biostatistics (coding and Quantitative Biology)** by Robert I. Colautti (2022). ***[Versão gratuita no GitHub](https://github.com/ColauttiLab/RCrashCourse_Book)***.

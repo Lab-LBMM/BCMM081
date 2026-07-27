@@ -1,0 +1,89 @@
+/*-- scss:defaults --*/
+// "Intro R" — light lecture theme, field-notebook feel.
+// Edit the five variables below and the whole deck follows.
+
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Source+Sans+3:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+$ink:        #1F2421;   // main text
+$paper:      #F6F7F5;   // background
+$moss:       #3D6B4A;   // accent: headings, links, rules
+$brick:      #A63D40;   // second accent: warnings, emphasis
+$slate:      #6B7671;   // muted text, captions
+
+$body-bg:               $paper;
+$body-color:            $ink;
+$link-color:            $moss;
+$selection-bg:          rgba($moss, .18);
+
+$font-family-sans-serif: "Source Sans 3", system-ui, sans-serif;
+$font-family-monospace:  "JetBrains Mono", ui-monospace, monospace;
+$presentation-font-size-root: 34px;
+$presentation-heading-font: "Bitter", Georgia, serif;
+$presentation-heading-color: $ink;
+$code-block-font-size: 0.72em;
+
+/*-- scss:rules --*/
+
+.reveal h1, .reveal h2 { letter-spacing: -0.01em; }
+
+// Slide titles get a hairline rule in the accent colour.
+.reveal .slide h2 {
+  padding-bottom: .18em;
+  border-bottom: 2px solid $moss;
+  margin-bottom: .6em;
+}
+
+// Section dividers: full-bleed moss.
+.reveal section.quarto-title-block,
+.reveal .slide.divider {
+  h1, h2 { color: $paper; border: none; }
+}
+.reveal .slide.divider { background-color: $moss; color: $paper; }
+
+// Code blocks sit on a slightly recessed panel with a left rule.
+.reveal div.sourceCode {
+  background-color: #FFFFFF;
+  border: 1px solid rgba($ink, .10);
+  border-left: 4px solid $moss;
+  border-radius: 3px;
+  padding: .35em .2em;
+}
+
+// Printed R output, styled like console paper tape.
+.reveal pre.text-output, .reveal .cell-output pre {
+  background-color: rgba($ink, .04);
+  border: none;
+  border-left: 4px solid $slate;
+  color: $slate;
+  font-size: .68em;
+}
+
+// The one flourish: highlighted code lines glow in brick.
+.reveal .sourceCode .code-annotation-anchor,
+.reveal pre code .highlight-line { background-color: rgba($brick, .12); }
+
+// Small caps eyebrow for topic labels: [Topic]{.eyebrow}
+.eyebrow {
+  font-family: $font-family-monospace;
+  font-size: .5em;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: $slate;
+  display: block;
+  margin-bottom: .3em;
+}
+
+.term { color: $brick; font-weight: 600; }
+.muted { color: $slate; }
+
+.reveal .footer { color: $slate; font-size: 15em; }
+.reveal .slide-number { color: $slate; }
+
+// Title slide
+.reveal .quarto-title-block .title {
+  color: #3D6B4A;   // <- change to whatever you want
+}
+
+.reveal .quarto-title-block .subtitle {
+  color: #A63D40;   // <- change to whatever you want
+}
