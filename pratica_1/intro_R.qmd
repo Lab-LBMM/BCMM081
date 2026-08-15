@@ -180,8 +180,8 @@ Nossos dados científicos, especialmente de ômicas, geralmente estão represent
 Funções básicas para se localizar no R:
 
 ::: {.incremental}
- - `getwd()`
- - `setwd()`
+ - `getwd()`: verificar o caminho até o local de trabalho
+ - `setwd()`: alterar o caminho até o local de trabalho
 
 :::
 
