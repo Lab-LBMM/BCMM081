@@ -212,7 +212,11 @@ setwd("C:\\Users\\renat\\Documents")
 setwd("C:/Users/renat/Documents")
 
 ```
+# Dataframes
 
+```{r}
+
+```
 
 
 # Bibliotecas que vamos usar
