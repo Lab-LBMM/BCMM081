@@ -52,9 +52,11 @@ c("Renato", "Angela", "Mario")
 Operações lógicas são usadas na comparação de valores:
 
 ```{r logical-operators}
->
-<
-<=
+10 > 4
+10 > 4
+10 < 4
+10 < 10
+10 <= 10
 ==
 >=
 | # | significa "OU"
@@ -142,6 +144,75 @@ rbind(
   seq(0, -2, length=5)
 )
 ```
+
+## Variáveis
+
+Valores únicos:
+
+```{r r-variables}
+nome_pessoa <- "Renato"
+# Inspecionando o valor da variável
+print(nome_pessoa)
+paste(nome_pessoa)
+nome_pessoa
+```
+
+## Vetores com valores misturados
+
+```{r}
+c("Renato", "Adelita", "Alfredo", 400, 300)
+c(5,7,1,4,3.4)
+# É importante tomar cuidado com alguns casos
+c(5,7,1,4,3.4, "missing")
+c(5,7,1,4,3.4, "> 3")
+```
+
+### Subconjunto de vetores
+
+```{r}
+inteiros_impares <- seq(1, 19, 2)
+inteiros_impares
+inteiros_impares[1]
+inteiros_impares[1:3]
+inteiros_impares[1:length(inteiros_impares)]
+inteiros_impares[1:(length(inteiros_impares)/2)]
+```
+
+## Matrizes
+
+```{r}
+matrix(inteiros_impares, nrow=2)
+matrix(inteiros_impares, nrow=3)
+matrix(inteiros_impares, nrow=4)
+matrix(inteiros_impares, nrow=10)
+```
+
+### Subconjunto de matrizes
+
+```{r}
+matriz_numerica <- matrix(inteiros_impares, nrow=4)
+print(matriz_numerica)
+matriz_numerica[1,3]
+# Primeira linha inteira
+matriz_numerica[1,]
+# Terceira coluna inteira
+matriz_numerica[,3]
+# Duas colunas inteiras
+matriz_numerica[,2:3]
+```
+
+# Trabalhando com arquivos
+
+```{r}
+# Obtendo o caminho absoluto
+getwd()
+# Alterando o caminho absoluto do local de trabalho
+setwd("C:\Users\renat\Documents")
+setwd("C:\\Users\\renat\\Documents")
+setwd("C:/Users/renat/Documents")
+
+```
+
 
 
 # Bibliotecas que vamos usar
