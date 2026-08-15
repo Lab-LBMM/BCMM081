@@ -104,6 +104,36 @@ Variáveis
 
 :::
 
+# Vetores e matrizes
+
+## Propriedades de vetores {.smaller}
+
+::: {.incremental}
+ - Unidimensional (1D)
+ - Células com endereço (índice) de 0 a *N*
+ - Comprimento definido e pode ser recuperado com `length()`
+ - Itens devem ser do mesmo tipo
+ - Subconjuntos de vetores são acessados com `[]`
+
+:::
+
+# Lists
+
+Atenção: Objetos do tipo `list` podem armazenar dados de tipos diferentes sem convertê-los.
+
+## Propriedades de matrizes {.smaller}
+
+::: {.incremental}
+ - Bidimensional (2D)
+ - Endereço com índices
+   - Linhas têm índices antes de vírgula
+   - Colunas têm índices depois de vírgula
+ - Subconjuntos de vetores são acessados com `[linha, coluna]`
+
+:::
+
+
+
 # Objetos e atribuição {.divider}
 
 ## A seta que faz tudo
