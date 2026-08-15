@@ -104,6 +104,33 @@ Variáveis
 
 :::
 
+## Nomes que o R aceita {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+**Funciona**
+
+```{r}
+#| eval: false
+abundancia
+n_ninhos_2025
+dados.brutos
+```
+:::
+::: {.column width="50%"}
+**Não funciona**
+
+```{r}
+#| eval: false
+2ninhos      # começa com número
+n ninhos     # tem espaço
+TRUE         # nome reservado
+```
+:::
+:::
+
+R diferencia maiúsculas de minúsculas: `Dados` e `dados` são [dois objetos distintos]{.term}.
+
 # Vetores e matrizes
 
 ## Propriedades de vetores {.smaller}
@@ -132,53 +159,31 @@ Atenção: Objetos do tipo `list` podem armazenar dados de tipos diferentes sem 
 
 :::
 
+## Arrays
 
+Termo usado para qualquer objetivo com *N* dimensões
 
-# Objetos e atribuição {.divider}
+::: {.incremental}
+ - Célula única (0)
+ - Vetor (1D)
+ - Matriz (2D)
+ - Arrays com mais de 2 dimensões
 
-## A seta que faz tudo
-
-```{r}
-#| code-line-numbers: "|1|2|3"
-n_formigas <- 42          # <1>
-n_formigas                # <2>
-n_formigas * 2            # <3>
-```
-
-1. `<-` guarda o valor **dentro** de um nome.
-2. Digitar o nome sozinho **imprime** o valor.
-3. O objeto não muda — o resultado é descartado.
-
-::: {.callout-tip}
-Atalho no RStudio: `Alt` + `-` escreve `<-`.
 :::
 
-## Nomes que o R aceita {.smaller}
+# Trabalhando com arquivos
 
-::: {.columns}
-::: {.column width="50%"}
-**Funciona**
+Nossos dados científicos, especialmente de ômicas, geralmente estão representados em arquivos grandes armazenados em nossos computadores.
 
-```{r}
-#| eval: false
-abundancia
-n_ninhos_2025
-dados.brutos
-```
+## Onde estamos ?
+
+Funções básicas para se localizar no R:
+
+::: {.incremental}
+ - `getwd()`
+ - `setwd()`
+
 :::
-::: {.column width="50%"}
-**Não funciona**
-
-```{r}
-#| eval: false
-2ninhos      # começa com número
-n ninhos     # tem espaço
-TRUE         # nome reservado
-```
-:::
-:::
-
-R diferencia maiúsculas de minúsculas: `Dados` e `dados` são [dois objetos distintos]{.term}.
 
 ## Tudo é um vetor
 
