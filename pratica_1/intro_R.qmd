@@ -48,6 +48,62 @@ Notas do apresentador ficam aqui e aparecem só na sua tela (tecla S).
 Lembrar: pedir para abrirem o RStudio antes de começar.
 :::
 
+## Criando um arquivo R Markdown {.smaller}
+
+::: {.incremental}
+- 
+:::
+
+## Criando um script R {.smaller}
+
+::: {.incremental}
+- Arquivo (*File*)
+- Novo arquivo (*New file*)
+- R script
+- Inclua códigos de R
+- Execute o código
+- Faça o *debugging*
+:::
+
+
+## Programação orientada a objetos {.smaller}
+
+Tipos de dados
+
+::: {.incremental}
+ - Strings (`"Carolina"`)
+ - Números inteiros (`12`)
+ - *Floats* (`12.421`)
+ - Números complexos (`0+12.43i`)
+ - Valores lógicos (`TRUE` e `FALSE`)
+ - Fatores (limitam o número de classes; geralmente definem códigos de grupos em estatística)
+
+:::
+
+## Programação orientada a objetos {.smaller}
+
+Objetos
+
+::: {.incremental}
+ - Planilhas do Excel
+ - Células, colunas, abas
+ - Sequências de DNA, RNA, proteínas
+ - Matrizes com dados de comunidades
+ - ... ou séries temporais
+ - ... ou saídas de testes estatísticos
+
+:::
+
+## Programação orientada a objetos {.smaller}
+
+Variáveis
+
+::: {.incremental}
+ - São objetos que podem ter seus valores alterados
+ - Usamos `=` ou `<-` para atribuir ou alterar valores associados a variáveis em R
+
+:::
+
 # Objetos e atribuição {.divider}
 
 ## A seta que faz tudo
