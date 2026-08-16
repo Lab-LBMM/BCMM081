@@ -246,49 +246,27 @@ Como representamos dados tabulares no R?
 
 :::
 
-# Data frames {.divider}
+# Pacotes em R
 
-## A tabela
+Conjuntos de funções agrupadas juntas em um único "lugar"
 
-```{r}
-coletas <- data.frame(
-  ninho     = c("N01", "N02", "N03", "N04"),
-  habitat   = c("mata", "borda", "mata", "borda"),
-  operarias = c(120, 85, 143, 61),
-  massa_g   = c(4.2, 3.1, 5.0, 2.4)
-)
-coletas
-```
+## Exemplo: Tidyverse
 
-## Olhando antes de analisar {.smaller}
+Conjunto de pacotes que compartilham representações de dados, trabalhando harmonicamente entre si.
 
-::: {.columns}
-::: {.column width="55%"}
-```{r}
-#| eval: false
-str(coletas)      # estrutura
-head(coletas)     # primeiras linhas
-summary(coletas)  # resumo por coluna
-nrow(coletas)     # nº de linhas
-names(coletas)    # nomes das colunas
-```
-:::
-::: {.column width="45%"}
-```{r}
-str(coletas)
-```
-:::
+ * `ggplot2` (visualização de dados)
+ * `dplyr` (manipulação de dados)
+ * Outros: `tidyr`, `readr`, `purrr`, `tibble`, `stringr`, `forcats` e `lubridate`
+
+Tidyverse torna simples a instalação de todos esses pacotes de uma vez.
+
+::: {.incremental}
+ - `write.csv()`
+
 :::
 
-## Recortando a tabela
 
-```{r}
-#| output-location: column-fragment
-#| code-line-numbers: "|1|2|3"
-coletas$operarias
-coletas[coletas$habitat == "mata", ]
-coletas[1:2, c("ninho", "massa_g")]
-```
+
 
 ## Erros que todo mundo comete {.smaller}
 

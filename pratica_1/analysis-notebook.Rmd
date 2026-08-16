@@ -57,11 +57,13 @@ Operações lógicas são usadas na comparação de valores:
 10 < 4
 10 < 10
 10 <= 10
-==
->=
+10 == 10
+10 >= 10
+14 >= 10
+10 != 10
+10 != 11
 | # | significa "OU"
 & # & significa "E"
-!= # Não é igual a
 ```
 
 ## Operadores lógicas e uso de vetores
@@ -318,38 +320,54 @@ write.csv(res_plant_omics_data,
           row.names = F, quote = FALSE) # Tanto faz usar F ou FALSE
 ```
 
-# Bibliotecas
+# Pacotes e bibliotecas
 
-## Instalando e importando bibliotecas
+## Instalando e importando pacotes
+
+Vamos testar a biblioteca Tidyverse, que tem se tornado muito popular:
 
 ```{r}
-
+install.packages("tidyverse")
+library(tidyverse)
 ```
 
+## Usando algumas funções importadas
 
-# Bibliotecas que vamos usar
+```{r}
+# https://dplyr.tidyverse.org/
+library(dplyr)
 
-```{r libraries}
+plant_omics_data |>
+  filter(omic_type == "metataxonomics")
 
+plant_omics_data |>
+  filter(omic_type == "metataxonomics") |>
+  summarise(
+    mean_seq_count = mean(seq_count),
+    sd_seq_count = sd(seq_count),
+    .by = omic_type
+  )
+
+res_plant_omics_data_tidyverse <- plant_omics_data |>
+  group_by(day_period, condition, omic_type) |>
+  summarise(
+    mean_seq_count = mean(seq_count),
+    sd_seq_count   = sd(seq_count),
+    .groups = "drop"
+  )
+
+head(res_plant_omics_data_tidyverse)
 ```
 
-# Análises
-
-```{r main-analysis}
-
+```{r}
+# Tínhamos feito a mesma operação com a função aggregate
+head(res_plant_omics_data)
 ```
-
-Interpretação de resultados aqui.
-
-# O que vimos hoje
-
-- 
--
--
 
 # Referências
 
 - R Crash Course for Biologists: An introduction to R for bioinformatics and biostatistics
+- [Página do Tidyverse](https://tidyverse.tidyverse.org/)
 
 # Session info
 
