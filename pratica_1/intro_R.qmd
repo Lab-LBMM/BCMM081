@@ -175,6 +175,18 @@ Termo usado para qualquer objetivo com *N* dimensões
 
 Nossos dados científicos, especialmente de ômicas, geralmente estão representados em arquivos grandes armazenados em nossos computadores.
 
+
+## Arquivo comumente usados
+
+::: {.incremental}
+ - Microsoft Excel (`.xlsx`)
+ - Arquivos de texto facilmente exportados do Excel
+   - Comma Separated Values (`.csv`)
+   - Tab Separated Values (`.tsv`)
+ - Importamos no R com a função `read.csv()`
+
+:::
+
 ## Onde estamos ?
 
 Funções básicas para se localizar no R:
@@ -185,47 +197,54 @@ Funções básicas para se localizar no R:
 
 :::
 
-## Tudo é um vetor
+## Objeto tipo data.frame
 
-```{r}
-#| output-location: fragment
-comprimento <- c(8.2, 9.1, 7.4, 10.3, 8.8)
-comprimento
-```
+Como representamos dados tabulares no R?
 
-. . .
+::: {.incremental}
+ - Tem duas dimensões, como uma matriz
+ - Possui informações adicionais de indexação de linhas e colunas
+ - Existem várias funções para trabalhar com `data.frame`
 
-```{r}
-#| output-location: fragment
-mean(comprimento)
-length(comprimento)
-```
+:::
 
-. . .
+## Dados de sequenciamento
 
-Operações são [vetorizadas]{.term} — sem `for`:
+::: {.incremental}
+ - Dados de um experimento fictício
+   - Arquivo `.csv` criado manualmente
+ - RNA-Seq de leveduras (*Saccharomyces cerevisiae*)
+   - Sequenciamento Illumina HiSeq 2500
+   - Paired-end
+   - Seleção por cDNA
+   - Arquivo `.csv` baixado do SRA (NCBI)
 
-```{r}
-comprimento * 2
-```
+:::
 
-## Os quatro tipos que você vai usar {.smaller}
+## Funções para recuperar subconjunto
 
-```{r}
-#| code-line-numbers: "|1|2|3|4"
-c(8.2, 9.1)                     # numeric  — medidas
-c("Atta", "Acromyrmex")         # character — nomes, IDs
-c(TRUE, FALSE)                  # logical  — resultado de testes
-factor(c("mata", "borda"))      # factor   — categorias com níveis
-```
+::: {.incremental}
+ - Sintaxe com `[]` e índices ou nomes de colunas
+ - `subset()`
 
-. . .
+:::
 
-Um vetor guarda **um tipo só**. Misture e o R converte tudo em texto, sem avisar:
+## Operações para cálculo de estatísticas de grupos
 
-```{r}
-c(1, 2, "três")
-```
+::: {.incremental}
+ - `aggregate()`
+ - `tapply()` - gera um array
+ - `lapply()` - `list`
+ - `sapply()` - `vector` (vetor 1D)
+
+:::
+
+## Salvando arquivos no computador
+
+::: {.incremental}
+ - `write.csv()`
+
+:::
 
 # Data frames {.divider}
 

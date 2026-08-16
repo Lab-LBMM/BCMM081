@@ -210,9 +210,117 @@ getwd()
 setwd("C:\Users\renat\Documents")
 setwd("C:\\Users\\renat\\Documents")
 setwd("C:/Users/renat/Documents")
-
 ```
+
+## Importando arquivos
+
+```{r}
+?read.csv
+read.csv("../pratica_1/plant_omics_data.csv",
+         header=TRUE)
+plant_omics_data <- read.csv("../pratica_1/plant_omics_data.csv",
+         header=TRUE)
+plant_omics_data
+
+read.csv("../pratica_1/SraRunInfo.csv",
+         header=TRUE)
+sra_metadata_levedura <- read.csv("../pratica_1/SraRunInfo.csv",
+         header=TRUE)
+sra_metadata_levedura
+```
+
+
 # Dataframes
+
+```{r}
+# Inspecionando nomes das colunas
+names(sra_metadata_levedura)
+
+# Mostrando algumas linhas do início do data.frame
+head(sra_metadata_levedura)
+head(sra_metadata_levedura, n = 10)
+
+# Mostrando algumas linhas do fim do data.frame
+tail(sra_metadata_levedura)
+
+# Quais as dimensões
+dim(sra_metadata_levedura)
+
+# Checando o número de linhas ou colunas
+nrow(sra_metadata_levedura)
+ncol(sra_metadata_levedura)
+
+# Qual a estrutura da tabela
+str(sra_metadata_levedura)
+```
+
+
+## Subconjuntos de dataframes
+
+```{r}
+head(plant_omics_data)
+
+dim(plant_omics_data)
+
+plant_omics_data[1,1]
+
+plant_omics_data[2:3]
+
+subset(plant_omics_data, condition=="water")
+
+unique(plant_omics_data$condition)
+
+duplicated(plant_omics_data$condition)
+```
+
+
+## Realizando operações com os dataframes
+
+```{r}
+aggregate(plant_omics_data$seq_count,
+          list(plant_omics_data$day_period),
+          mean)
+
+aggregate(seq_count ~ day_period, data=plant_omics_data, mean)
+
+# Calculando médias para combinações de grupos
+aggregate(seq_count ~ day_period*condition*omic_type, data=plant_omics_data, mean)
+
+# Algumas combinações que apresentam média muito diferente do normal também tem desvio padrão diferente
+aggregate(seq_count ~ day_period*condition*omic_type, data=plant_omics_data, sd)
+
+sd_df   <- aggregate(seq_count ~ day_period + condition + omic_type,
+                     data = plant_omics_data, FUN = sd)
+sd_df
+mean_df <- aggregate(seq_count ~ day_period + condition + omic_type,
+                     data = plant_omics_data, FUN = mean)
+mean_df
+
+# Renomeando a quarta coluna
+names(sd_df)[4]   <- "sd"
+names(mean_df)[4] <- "mean"
+
+# Usando a função merge para adicionar média e desvio padrão para linhas com mesma informação de grupos day_period, condition e omic_type
+?merge
+res_plant_omics_data <- merge(mean_df, sd_df, by = c("day_period", "condition", "omic_type"))
+res_plant_omics_data
+```
+## Salvando arquivos no computador
+
+```{r}
+write.csv(res_plant_omics_data,
+          "estatisticas_plant_data_omics.csv",
+          row.names = F)
+
+# Removendo as aspas no arquivo exportado
+write.csv(res_plant_omics_data,
+          "estatisticas_plant_data_omics.csv",
+          row.names = F, quote = FALSE) # Tanto faz usar F ou FALSE
+```
+
+# Bibliotecas
+
+## Instalando e importando bibliotecas
 
 ```{r}
 
