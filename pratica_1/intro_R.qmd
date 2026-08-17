@@ -261,6 +261,89 @@ Conjunto de pacotes que compartilham representações de dados, trabalhando harm
 Tidyverse torna simples a instalação de todos esses pacotes de uma vez.
 
 
+# Gráficos em R
+
+A biblioteca mais popular para gráficos em R é o `ggplot2`, incluída no Tidyverse [[ggplot2](https://ggplot2.tidyverse.org/)) e desenvolvida pelo mesmo grupo que criou o R Studio
+
+## Por que gerar gŕaficos na linha de comando...
+
+
+::: {.incremental}
+::: {.fragment}
+se eu posso fazer com ferramentas como o Excel?
+:::
+
+:::
+
+## Alguns motivos
+
+::: {.incremental}
+ - A prática leva ao aumento da velocidade
+ - Uso de código dá **maior controle** sobre os aspectos do gráfico
+ - Com o código e os dados disponíveis, a visualização se torna **reprodutível**
+
+:::
+
+## Conceitos importantes sobre gráficos
+
+[Raster vs. Vetor]{.eyebrow}
+
+::: {.incremental}
+ - Formatos de arquivo
+   - Raster - cor e intensidade de pixels (`.jpeg`/`.jpg`, `.png`, `.tiff`, `.bmp`)
+   - Vetor - formas (`.svg`, `.pdf`, `.eps`)
+ - **Dê preferência para vetores**, evitando imagens "pixeladas"
+ - **Exceções**: fotos, dados em grades, arquivo gigantes (c/ milhões/bilhões de pontos)
+
+:::
+
+## Conceitos importantes sobre gráficos
+
+[Resolução vs. dimensão]{.eyebrow}
+
+::: {.incremental}
+ - Dimensão de pixel combina dois aspectos
+   - Tamanho
+   - Resolução (megapixel, dpi - "*dots per inch*")
+
+:::
+
+
+## Conceitos importantes sobre gráficos
+
+[Visualização no monitor vs. impressão]{.eyebrow}
+
+::: {.incremental}
+ - 
+
+
+:::
+
+## Conceitos importantes sobre gráficos
+
+[Acessibilidade]{.eyebrow}
+
+::: {.incremental}
+ - Vieses culturais (azul e vermelho, frio e calor)
+ - Visualização por indivíduos com algum tipo de daltonismo
+   - Maximizar diferenças em espectro e intensidade
+ - Impressão em preto e branco
+
+
+:::
+
+
+## Conceitos importantes sobre gráficos
+
+[]{.eyebrow}
+
+::: {.incremental}
+ - 
+
+
+:::
+
+
 ## Erros que todo mundo comete {.smaller}
 
 ::: {.callout-warning appearance="simple"}

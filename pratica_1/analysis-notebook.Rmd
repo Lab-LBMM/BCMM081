@@ -25,9 +25,9 @@ knitr::opts_chunk$set(
 
 # Objetivos
 
-- 
-- 
-- 
+- Entender os conceitos básicos de programação usando R
+- Manipular dados tabulares importados de arquivos em objetos do tipo dataframe
+- Gerar gráficos iniciais para resumir dados tabulares
 
 # Introdução
 
@@ -218,9 +218,9 @@ setwd("C:/Users/renat/Documents")
 
 ```{r}
 ?read.csv
-read.csv("../pratica_1/plant_omics_data.csv",
+read.csv("/home/user/Repositories/BCMM081/pratica_1/plant_omics_data.csv",
          header=TRUE)
-plant_omics_data <- read.csv("../pratica_1/plant_omics_data.csv",
+plant_omics_data <- read.csv("/home/user/Repositories/BCMM081/pratica_1/plant_omics_data.csv",
          header=TRUE)
 plant_omics_data
 
@@ -362,6 +362,12 @@ head(res_plant_omics_data_tidyverse)
 ```{r}
 # Tínhamos feito a mesma operação com a função aggregate
 head(res_plant_omics_data)
+```
+
+# Primeiros gráficos em R com ggplot2
+
+```{r ggplot2-plots}
+
 ```
 
 # Referências
