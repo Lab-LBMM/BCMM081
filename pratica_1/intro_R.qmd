@@ -260,13 +260,6 @@ Conjunto de pacotes que compartilham representações de dados, trabalhando harm
 
 Tidyverse torna simples a instalação de todos esses pacotes de uma vez.
 
-::: {.incremental}
- - `write.csv()`
-
-:::
-
-
-
 
 ## Erros que todo mundo comete {.smaller}
 
@@ -282,21 +275,6 @@ Tidyverse torna simples a instalação de todos esses pacotes de uma vez.
 O `+` no console → você deixou um parêntese ou aspas abertos. `Esc` cancela.
 :::
 
-## O primeiro gráfico
-
-```{r}
-#| fig-width: 8
-#| fig-height: 3.2
-#| output-location: slide
-library(ggplot2)
-
-ggplot(coletas, aes(x = habitat, y = operarias, fill = habitat)) +
-  geom_col(width = .6) +
-  scale_fill_manual(values = c(mata = "#3D6B4A", borda = "#A63D40")) +
-  labs(x = NULL, y = "Operárias coletadas") +
-  theme_minimal(base_size = 16) +
-  theme(legend.position = "none")
-```
 
 ## Sua vez {background-color="#3D6B4A"}
 
