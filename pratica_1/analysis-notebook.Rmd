@@ -62,8 +62,13 @@ Operações lógicas são usadas na comparação de valores:
 14 >= 10
 10 != 10
 10 != 11
-| # | significa "OU"
-& # & significa "E"
+14 >= 10 & 10 != 10
+14 == 10 & 10 != 10
+14 <= 10 & 10 != 10
+14 >= 10 & 10 == 10
+14 >= 10 | 10 != 10
+14 == 10 | 10 != 10
+14 <= 10 | 10 != 10
 ```
 
 ## Operadores lógicas e uso de vetores
@@ -218,9 +223,9 @@ setwd("C:/Users/renat/Documents")
 
 ```{r}
 ?read.csv
-read.csv("/home/user/Repositories/BCMM081/pratica_1/plant_omics_data.csv",
+read.csv("../pratica_1/plant_omics_data.csv",
          header=TRUE)
-plant_omics_data <- read.csv("/home/user/Repositories/BCMM081/pratica_1/plant_omics_data.csv",
+plant_omics_data <- read.csv("../pratica_1/plant_omics_data.csv",
          header=TRUE)
 plant_omics_data
 
@@ -229,6 +234,21 @@ read.csv("../pratica_1/SraRunInfo.csv",
 sra_metadata_levedura <- read.csv("../pratica_1/SraRunInfo.csv",
          header=TRUE)
 sra_metadata_levedura
+
+# Criando um dataframe
+mushrooms <- data.frame(
+  id      = sprintf("obs%03d", 1:120),
+  field   = sample(c("Field A", "Field B", "Field C"), 120, replace = TRUE,
+                   prob = c(0.4, 0.35, 0.25)),
+  species = sample(c("Agaricus campestris", "Coprinus comatus",
+                     "Marasmius oreades", "Panaeolus papilionaceus"),
+                   120, replace = TRUE, prob = c(0.35, 0.25, 0.25, 0.15)),
+  substrate = sample(c("solo", "esterco", "serapilheira"), 120, replace = TRUE),
+  height_cm = round(rnorm(120, mean = 7, sd = 2.5), 1),
+  diameter_cm = round(rnorm(120, mean = 5, sd = 1.8), 1)
+)
+
+mushrooms
 ```
 
 
@@ -367,8 +387,92 @@ head(res_plant_omics_data)
 # Primeiros gráficos em R com ggplot2
 
 ```{r ggplot2-plots}
-
+# Não é necessário importar se tidyverse for importado
+library(ggplot2)
 ```
+
+## Histograma de frequências com uma variável contínua
+
+```{r}
+# Gerando gráficos com a distribuição normal
+norm_10_m50_sd5 <- rnorm(10, mean=50, sd=5)
+norm_10_m50_sd10 <- rnorm(10, mean=50, sd=10)
+norm_10_m1000_sd5 <- rnorm(10, mean=1000, sd=5)
+norm_10_m50_sd60 <- rnorm(10, mean=50, sd=60)
+norm_100_m50_sd60 <- rnorm(100, mean=50, sd=60)
+norm_1000_m50_sd60 <- rnorm(1000, mean=50, sd=60)
+norm_1000_m50_sd40 <- rnorm(1000, mean=50, sd=40)
+norm_1000_m50_sd20 <- rnorm(1000, mean=50, sd=20)
+
+# Inspecionando o vetor
+typeof(norm_10_m1000_sd5)
+class(norm_10_m1000_sd5)
+str(norm_10_m1000_sd5)
+
+# Gerando histograma com dataframe criado a partir do vetor
+ggplot(aes(x=norm_10_m50_sd5), data=as.data.frame(norm_10_m50_sd5)) + geom_histogram()
+ggplot(aes(x=norm_10_m1000_sd5), data=as.data.frame(norm_10_m1000_sd5)) + geom_histogram()
+ggplot(aes(x=norm_100_m50_sd60), data=as.data.frame(norm_100_m50_sd60)) + geom_histogram()
+
+# Aumentando o número amostral
+ggplot(aes(x=norm_1000_m50_sd60), data=as.data.frame(norm_1000_m50_sd60)) +
+  geom_histogram()
+ggplot(aes(x=norm_1000_m50_sd40), data=as.data.frame(norm_1000_m50_sd40)) +
+  geom_histogram()
+
+# Diminuindo a amplitude das classes (aumentando o número de bins/classes)
+ggplot(aes(x=norm_1000_m50_sd20), data=as.data.frame(norm_1000_m50_sd20)) +
+  geom_histogram(bins = 30)
+ggplot(aes(x=norm_1000_m50_sd20), data=as.data.frame(norm_1000_m50_sd20)) +
+  geom_histogram(bins = 100)
+ggplot(aes(x=norm_1000_m50_sd20), data=as.data.frame(norm_1000_m50_sd20)) +
+  geom_histogram(bins = 200)
+```
+
+```{r}
+?geom_density
+ggplot(aes(x=norm_1000_m50_sd20), data=as.data.frame(norm_1000_m50_sd20)) +
+  geom_density()
+```
+
+```{r}
+ggplot(aes(x=norm_1000_m50_sd20), data=as.data.frame(norm_1000_m50_sd20)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "grey80", colour = "white") +
+  geom_density(colour = "steelblue", linewidth = 1)
+```
+
+## Uma variável categórica
+
+```{r}
+ggplot(aes(x=species), data=mushrooms) + geom_bar()
+```
+
+## Duas variáveis categóricas
+
+```{r}
+ggplot(aes(x=field, fill=species), data=mushrooms) + geom_bar()
+```
+
+
+## Duas variáveis contínuas
+
+```{r}
+# Verificando a estrutura das colunas
+str(mushrooms)
+
+ggplot(aes(x=height_cm, y=diameter_cm), data=mushrooms) + geom_point()
+```
+
+## Duas variáveis, uma contínua e uma categórica
+
+```{r}
+# Por campo
+ggplot(aes(x=field, y=height_cm), data=mushrooms) + geom_boxplot()
+# Por substrato
+ggplot(aes(x=substrate, y=height_cm), data=mushrooms) + geom_boxplot()
+```
+
+
 
 # Referências
 

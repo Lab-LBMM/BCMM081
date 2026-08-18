@@ -308,17 +308,6 @@ se eu posso fazer com ferramentas como o Excel?
 
 :::
 
-
-## Conceitos importantes sobre gráficos
-
-[Visualização no monitor vs. impressão]{.eyebrow}
-
-::: {.incremental}
- - 
-
-
-:::
-
 ## Conceitos importantes sobre gráficos
 
 [Acessibilidade]{.eyebrow}
@@ -333,13 +322,12 @@ se eu posso fazer com ferramentas como o Excel?
 :::
 
 
-## Conceitos importantes sobre gráficos
-
-[]{.eyebrow}
+## Alguns gráficos básicos
 
 ::: {.incremental}
- - 
-
+ - Variáveis categóricas ou contínuas
+ - Composição: `ggplot()`, geralmente incluindo a função `aes()` e o parâmetro `data=`
+ - `geom_<name>` define o tipo de saída / gráfico
 
 :::
 
