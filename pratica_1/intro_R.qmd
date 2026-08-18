@@ -31,16 +31,20 @@ knitr:
     collapse: true
 ---
 
-## Combinados de hoje {.smaller}
+## Objetivos de hoje {.smaller}
 
 [Roteiro]{.eyebrow}
 
 ::: {.incremental}
-- R como calculadora: tudo é uma **operação**
-- Objetos e atribuição: tudo tem um **nome**
-- Vetores: tudo é um **vetor**
-- `data.frame`: a tabela do dia a dia
+- Usar R como calculadora (operações matemáticas básicas)
+- Objetos e atribuição: tipos de dados e variáveis
+- Vetores, matrizes, arrays
+- Importação/exportação de arquivos tabulares
+- Objeto `data.frame` e operações com dataframes
 - Primeiro gráfico
+- Pacotes em R, com exemplos do `Tidyverse`
+- Geração de gráficos com `ggplot2`
+- Usar ferramentas de IA para auxiliar na programação em R
 :::
 
 ::: {.notes}
@@ -51,7 +55,9 @@ Lembrar: pedir para abrirem o RStudio antes de começar.
 ## Criando um arquivo R Markdown {.smaller}
 
 ::: {.incremental}
-- 
+- File → New File → R Markdown
+- Inclua título, autor e data
+- Escolha o tipo de saída: `HTML`, `PDF` ou `Word`
 :::
 
 ## Criando um script R {.smaller}
@@ -246,6 +252,20 @@ Como representamos dados tabulares no R?
 
 :::
 
+## Controle de fluxo e estruturas condicionais
+
+::: {.incremental}
+ - Operador que avalia o valor `FALSE`/`TRUE`: `if() {}`
+ - Operação para estabelecer uma alternativa, caso `FALSE`: `if() {} else() {}`
+ - `if` aninhado: `if() {} else { if() {} else() {} }`
+ - Versão compacta do if-else: `ifelse()`
+ - Realiza uma operação até que certa condição seja estabelecida: `for() {}`
+ - Laço aninhado: `for() { for() {} }`
+ - Laço que se repete enquanto a condição for verdadeira: `while() {}`
+
+:::
+
+
 # Pacotes em R
 
 Conjuntos de funções agrupadas juntas em um único "lugar"
@@ -318,7 +338,6 @@ se eu posso fazer com ferramentas como o Excel?
    - Maximizar diferenças em espectro e intensidade
  - Impressão em preto e branco
 
-
 :::
 
 
@@ -332,40 +351,18 @@ se eu posso fazer com ferramentas como o Excel?
 :::
 
 
-## Erros que todo mundo comete {.smaller}
-
-::: {.callout-warning appearance="simple"}
-`Error: object 'coletass' not found` → nome digitado errado ou objeto ainda não criado.
-:::
-
-::: {.callout-warning appearance="simple"}
-`Error in ... could not find function "ggplot"` → falta `library(ggplot2)`.
-:::
-
-::: {.callout-warning appearance="simple"}
-O `+` no console → você deixou um parêntese ou aspas abertos. `Esc` cancela.
-:::
-
-
-## Sua vez {background-color="#3D6B4A"}
-
-[Exercício · 5 minutos]{.eyebrow}
-
-1. Crie um vetor `massa` com cinco valores.
-2. Calcule a média e o desvio padrão (`sd()`).
-3. Adicione a coluna `densidade` = `operarias / massa_g` em `coletas`.
-
-```{r}
-#| echo: false
-# install.packages("countdown")
-countdown::countdown(minutes = 5, seconds = 0, top = 0, right = 0)
-```
-
 ## Para a próxima semana {.smaller}
 
 - Relatório de aula prática
+  - Aplicar os conceitos aprendidos em aula para análise exploratória de um novo conjunto de dados
+  - Documentar o R Markdown com uma boa narrativa
+  - Documentar os códigos
+  - Incluir gráficos e tabelas com os resultados obtidos e interpretá-los
+  - Recomendação de leitura para aspectos de reprodutibilidade: [Guia de Pesquisa Reprodutível The Turing Way](https://book.the-turing-way.org/reproducible-research/reproducible-research/)
+  - Entrega para o professor até 25/08/2026
 
 
 ## Referências e recursos {.smaller}
 
 - **R Crash Course for Biologists: An Introduction to R for bioinformatics and biostatistics (coding and Quantitative Biology)** by Robert I. Colautti (2022). ***[Versão gratuita no GitHub](https://github.com/ColauttiLab/RCrashCourse_Book)***.
+- **Guide for Reproducible Research: The Turing Way**. ***[Versão online (em inglês)](https://book.the-turing-way.org/reproducible-research/reproducible-research/)***.

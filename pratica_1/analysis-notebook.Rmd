@@ -340,6 +340,84 @@ write.csv(res_plant_omics_data,
           row.names = F, quote = FALSE) # Tanto faz usar F ou FALSE
 ```
 
+# Controle de fluxo e estruturas condicionais
+
+```{r}
+# Exemplo simples de if
+x <- 10
+
+if (x > 0) {
+  print("x é positivo")
+}
+
+# Exemplo simples de if-else
+narrativa = 10
+documentacao_codigos = 10
+analise_resultados = 10
+
+if (narrativa >= 5) {
+  print("Narrativa adequada")
+} else {
+  print("Narrativa insuficiente")
+}
+
+if (documentacao_codigos >= 5) {
+  print("Documentação adequada")
+} else {
+  print("Documentação insuficiente")
+}
+
+ifelse(analise_resultados >= 5, 
+       "Análise de resultados adequada", 
+       "Análise de resultados insuficiente")
+
+if (analise_resultados >= 5) {
+  print("Análise de resultados adequada")
+} else {
+  print("Análise de resultados insuficiente")
+}
+
+if (analise_resultados >= 5 & narrativa >= 5 & documentacao_codigos >= 5) {
+  print("Relatório adequado")
+  nota_final_relatorio = (analise_resultados + narrativa + documentacao_codigos) / 3
+  print(paste("Nota final do relatório:", nota_final_relatorio))
+} else {
+  print("Relatório insuficiente")
+}
+
+if (analise_resultados >= 5 & narrativa >= 5 & documentacao_codigos >= 5) {
+  print("Relatório adequado")
+  nota_final_relatorio = (analise_resultados + narrativa + documentacao_codigos) / 3
+  print(paste("Nota final do relatório:", nota_final_relatorio))
+} else {
+  print("Relatório insuficiente")
+  if (analise_resultados < 5) {
+    print("Análise de resultados insuficiente")
+  }
+  if (narrativa < 5) {
+    print("Narrativa insuficiente")
+  }
+  if (documentacao_codigos < 5) {
+    print("Documentação insuficiente")
+  }
+}
+
+# Exemplo de casos aninhados (nested if)
+nota <- 4.9
+
+if (nota >= 9) {
+  print("A")
+} else if (nota >= 5) {
+  if (nota >= 7) {
+    print("B")
+  } else {
+    print("C")
+  }
+} else {
+  print("Reprovado")
+}
+```
+
 # Pacotes e bibliotecas
 
 ## Instalando e importando pacotes
