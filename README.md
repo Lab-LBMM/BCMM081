@@ -29,6 +29,11 @@ Programas de semestres/anos anteriores estão no diretório `programas_disciplin
 
 ## Atividades práticas em 2026
 
- * `pratica_1/`: Introdução à programação com R
+ * `pratica_1/`: Introdução à programação com R (R markdown)
+     * Exemplo arquivos CSV SRA (NCBI): `SraRunInfo.csv`
+     * Exemplo arquivos CSV metadados: `plant_omics_data.csv`
+     * Arquivo de preparo aula prática: `caderno_preparo_pratica.Rmd`
+     * Slides da aula prática: `intro_R.html`
+     * Exemplo script R: `operacoes_matematicas.R`
  * `pratica_2/`: Análise de expressão diferencial em R
  * `pratica_3/`: Análise de diversidade microbiana em R
