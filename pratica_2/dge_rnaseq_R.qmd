@@ -51,14 +51,13 @@ knitr:
 ## Dados da atividade prática {.smaller}
 
 ::: {.incremental}
-- Dados de humanos: Himes et al. (2014)
-  - Genoma de referência: 
-  - Dados brutos de sequenciamento: 
-  - Metadados associados às amostras: 
 - Dados de leveduras: Wu et al. (2018)
   - Genoma de referência: 
-  - Dados brutos de sequenciamento: 
+  - Dados brutos de sequenciamento Illumina: 
   - Metadados associados às amostras:
+  - Paired-end e single-end
+  - Strand-specific e unstranded
+  
 :::
 
 ::: {.notes}
@@ -118,7 +117,6 @@ fastqc
 
 
 
-## RSeQC
 
 
 
@@ -137,7 +135,18 @@ fastqc
 
 # Análise de contaminações em dados de RNA-Seq {.divider style="text-align: center;"}
 
-## HISAT2 
+## SortMeRna
+
+
+
+
+## HISAT2
+
+
+
+
+## RSeQC
+
 
 
 
@@ -146,6 +155,22 @@ fastqc
 
 
 
+
+
+# Quantificação da expressão {.divider style="text-align: center;"}
+
+## HTSeq
+
+
+
+
+
+## Kallisto
+
+
+
+
+# Expressão diferencial de genes {.divider style="text-align: center;"}
 
 
 
@@ -170,5 +195,4 @@ countdown::countdown(minutes = 5, seconds = 0, top = 0, right = 0)
 ## Referências e recursos {.smaller}
 
 - Bharti and Grimm. **Design and Analysis of RNA Sequencing Data.** Next Generation Sequencing and Data Analysis. Cham: Springer International Publishing, 2021. 143-175. [BookChapter RNA-Seq Analyses](https://github.com/grimmlab/BookChapter-RNA-Seq-Analyses)
-- *Dados de humanos*: Himes, Blanca E., et al. **RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells.** PloS one 9.6 (2014): e99625.
 - *Dados de leveduras*: Wu, Andrew CK, et al. **Repression of Divergent Noncoding Transcription by a Sequence-Specific Transcription Factor.** Molecular Cell 72 (2018): 942-954.
