@@ -100,16 +100,30 @@ XXXX
 ## FastQC
 
 ::: {.incremental}
-- Referência: 
-- Versão: 
+
 :::
 
 ## FastQC - Executando
 
 ```bash
 # FastQC - Quality control for raw sequence data
-fastqc 
+fastqc SRR6357070_1.fastq.gz
+fastqc SRR6357070_2.fastq.gz
 ```
+
+## FastQC - Resultados (estatísticas gerais)
+
+![](fastqc_generalstats.png)
+
+
+## FastQC - Resultados (qualidade por base)
+
+![](fastqc_perbasequal.png)
+
+
+## FastQC - Resultados (qualidade por sequência)
+
+![](fastqc_perseqqual.png)
 
 
 ## MultiQC
@@ -195,4 +209,4 @@ countdown::countdown(minutes = 5, seconds = 0, top = 0, right = 0)
 ## Referências e recursos {.smaller}
 
 - Bharti and Grimm. **Design and Analysis of RNA Sequencing Data.** Next Generation Sequencing and Data Analysis. Cham: Springer International Publishing, 2021. 143-175. [BookChapter RNA-Seq Analyses](https://github.com/grimmlab/BookChapter-RNA-Seq-Analyses)
-- *Dados de leveduras*: Wu, Andrew CK, et al. **Repression of Divergent Noncoding Transcription by a Sequence-Specific Transcription Factor.** Molecular Cell 72 (2018): 942-954.
+- *Dados de leveduras*: [Wu, Andrew CK, et al.](https://www.cell.com/molecular-cell/fulltext/S1097-2765(18)30878-5) **Repression of Divergent Noncoding Transcription by a Sequence-Specific Transcription Factor.** Molecular Cell 72 (2018): 942-954.
