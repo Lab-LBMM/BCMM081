@@ -142,8 +142,8 @@ fastqc SRR6357070_2.fastq.gz
 ::: {.incremental}
 - Download do executável
 - Leituras pareadas 
-- Mínimo de qualidade ()
-- Mínimo de comprimento ()
+- Mínimo de qualidade (20)
+- Mínimo de comprimento (25)
 :::
 
 ## fastp - download e permissão de execução
@@ -164,37 +164,44 @@ fastp --in1 SRR6357070_1.fastq.gz --in2 SRR6357070_2.fastq.gz \
   --html SRR6357070_fastp.html
 ```
 
-## fastp - Resultados (estimativa de tamanho de inserto)
 
-![](fastp_insertsizeestimate.png)
-
-
-## fastp - Resultados ()
+## fastp - Resultados (estatísticas gerais)
 
 ![](fastp_stats_1.png)
 
-## fastp - Resultados ()
+## fastp - Resultados (estatísticas gerais)
 
 ![](fastp_stats_2.png)
 
-## fastp - Resultados ()
+## fastp - Resultados (estatísticas gerais)
 
 ![](fastp_stats_3.png)
 
+## fastp - Resultados (estimativa de tamanho de inserto)
 
-
-
-
-## cutadapt
+![](fastp_insertsizeestimate.png)
 
 
 
 
 # Análise de contaminações em dados de RNA-Seq {.divider style="text-align: center;"}
 
-## SortMeRna
+## sortmerna - download de software e banco de dados
 
+```bash
+wget https://github.com/sortmerna/sortmerna/releases/download/v7.0.0/sortmerna-7.0.0-Linux.sh
+bash sortmerna-7.0.0-Linux.sh --skip-license
+rm sortmerna-7.0.0-Linux.sh
+wget https://github.com/biocore/sortmerna/releases/download/v4.3.4/database.tar.gz
+mkdir rRNA_databases_v4
+tar -xvf database.tar.gz -C rRNA_databases_v4
+```
 
+## sortmerna - execução
+
+```bash
+
+```
 
 
 ## HISAT2
