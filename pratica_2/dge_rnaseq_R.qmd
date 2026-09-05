@@ -52,7 +52,7 @@ knitr:
 
 ::: {.incremental}
 - Dados de leveduras: Wu et al. (2018)
-  - Genoma de referência: 
+  - Genoma de referência: *S. cerevisiae* (montagem R64-1-1, release 90)
   - Dados brutos de sequenciamento Illumina: 
   - Metadados associados às amostras:
   - Paired-end e single-end
@@ -100,7 +100,7 @@ XXXX
 ## FastQC
 
 ::: {.incremental}
-
+- Download do executável
 :::
 
 ## FastQC - Executando
@@ -138,6 +138,49 @@ fastqc SRR6357070_2.fastq.gz
 # Limpeza dos dados de sequenciamento
 
 ## fastp
+
+::: {.incremental}
+- Download do executável
+- Leituras pareadas 
+- Mínimo de qualidade ()
+- Mínimo de comprimento ()
+:::
+
+## fastp - download e permissão de execução
+
+```bash
+# download the latest build
+wget http://opengene.org/fastp/fastp
+chmod a+x ./fastp
+```
+
+## fastp - Executando
+
+```bash
+fastp --in1 SRR6357070_1.fastq.gz --in2 SRR6357070_2.fastq.gz \
+  --out1 SRR6357070_1_clean.fastq.gz --out2 SRR6357070_2_clean.fastq.gz \
+  --verbose --adapter_sequence AGATCGGAAGAGC --adapter_sequence_r2 AGATCGGAAGAGC \
+  --qualified_quality_phred 20 --length_required 25 --thread 8 \
+  --html SRR6357070_fastp.html
+```
+
+## fastp - Resultados (estimativa de tamanho de inserto)
+
+![](fastp_insertsizeestimate.png)
+
+
+## fastp - Resultados ()
+
+![](fastp_stats_1.png)
+
+## fastp - Resultados ()
+
+![](fastp_stats_2.png)
+
+## fastp - Resultados ()
+
+![](fastp_stats_3.png)
+
 
 
 
