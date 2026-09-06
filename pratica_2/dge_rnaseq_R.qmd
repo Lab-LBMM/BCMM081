@@ -186,21 +186,22 @@ fastp --in1 SRR6357070_1.fastq.gz --in2 SRR6357070_2.fastq.gz \
 
 # Análise de contaminações em dados de RNA-Seq {.divider style="text-align: center;"}
 
-## sortmerna - download de software e banco de dados
+## RiboDetector - instalando o software em ambiente conda
 
 ```bash
-wget https://github.com/sortmerna/sortmerna/releases/download/v7.0.0/sortmerna-7.0.0-Linux.sh
-bash sortmerna-7.0.0-Linux.sh --skip-license
-rm sortmerna-7.0.0-Linux.sh
-wget https://github.com/biocore/sortmerna/releases/download/v4.3.4/database.tar.gz
-mkdir rRNA_databases_v4
-tar -xvf database.tar.gz -C rRNA_databases_v4
+conda create -n ribodetector python=3.10
+conda activate ribodetector
+pip install ribodetector
 ```
 
-## sortmerna - execução
+## RiboDetector - execução
+
+Usando a versão do ribodetector que não usa GPU (`ribodetector_cpu`):
 
 ```bash
-
+ ribodetector_cpu -l 100 -t 10 -i SRR6357070_1.fastq.gz SRR6357070_2.fastq.gz \
+  -o SRR6357070_1.nonrrna.fastq.gz SRR6357070_2.nonrrna.fastq.gz \
+  -e rrna --chunk_size 256
 ```
 
 
