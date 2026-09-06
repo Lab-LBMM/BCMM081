@@ -99,6 +99,8 @@ XXXX
 
 ## FastQC
 
+FastQC v0.12.1
+
 ::: {.incremental}
 - Download do executável
 :::
@@ -148,6 +150,8 @@ fastqc SRR6357070_2.fastq.gz
 
 ## fastp - download e permissão de execução
 
+fastp 1.3.6
+
 ```bash
 # download the latest build
 wget http://opengene.org/fastp/fastp
@@ -164,6 +168,18 @@ fastp --in1 SRR6357070_1.fastq.gz --in2 SRR6357070_2.fastq.gz \
   --html SRR6357070_fastp.html
 ```
 
+## fastp - Executando para múltiplas amostras com bash
+
+```bash
+for SAMPLE in SRR6357071 SRR6357072 SRR6357073 SRR6357074 SRR6357076 SRR6357077 SRR6357078 SRR6357079 SRR6357080 SRR6357081 SRR6357082 SRR6357083 SRR6357084 SRR6357085
+ do
+ fastp --in1 "$SAMPLE"_1.fastq.gz --in2 "$SAMPLE"_2.fastq.gz \
+  --out1 "$SAMPLE"_1_clean.fastq.gz --out2 "$SAMPLE"_2_clean.fastq.gz \
+  --verbose --adapter_sequence AGATCGGAAGAGC --adapter_sequence_r2 AGATCGGAAGAGC \
+  --qualified_quality_phred 20 --length_required 25 --thread 8 \
+  --html "$SAMPLE"_fastp.html
+done
+```
 
 ## fastp - Resultados (estatísticas gerais)
 
@@ -187,6 +203,8 @@ fastp --in1 SRR6357070_1.fastq.gz --in2 SRR6357070_2.fastq.gz \
 # Análise de contaminações em dados de RNA-Seq {.divider style="text-align: center;"}
 
 ## RiboDetector - instalando o software em ambiente conda
+
+ribodetector_cpu 0.3.3
 
 ```bash
 conda create -n ribodetector python=3.10
@@ -242,22 +260,63 @@ hisat2-build --exon GCF_000146045.2_R64_genomic.exons \
 ```
 
 
-## HISAT2 - mapeando leituras de sequenciamento
+## HISAT2 - mapeando leituras de sequenciamento e verificando strandness
 
 ```bash
-
+hisat2 -q --met-file SRR6357070_hisat2.metrics -p 8 \
+ -x ../ref_genome/GCF_000146045.2/GCF_000146045.2_R64_genomic.fna \
+ -1 ../yeast_data/SRR6357070_1.nonrrna.fastq.gz \
+ -2 ../yeast_data/SRR6357070_2.nonrrna.fastq.gz -S SRR6357070_hisat2.sam
 ```
 
+## AGAT
+
+Another GFF Analysis Toolkit (AGAT) - Version: v0.8.0
+
+```bash
+conda create -n agat_env
+conda activate agat_env
+conda install -c bioconda agat
+```
+
+Gerando um arquivo BED12:
+
+```bash
+agat_convert_sp_gff2bed.pl --gff GCF_000146045.2_R64_genomic.gff -o GCF_000146045.2_R64_genomic.bed
+```
 
 ## RSeQC
 
+infer_experiment.py 5.05
 
+```bash
+infer_experiment.py -i SRR6357070_hisat2.sam -r ../ref_genome/GCF_000146045.2/GCF_000146045.2_R64_genomic.bed -s 400000
+```
 
+Esperado para Illumina TruSeq: `1+-,1-+,2++,2--`:
 
+```bash
+Reading reference gene model ../ref_genome/GCF_000146045.2/GCF_000146045.2_R64_genomic.bed ... Done
+Loading SAM/BAM file ...  Total 400000 usable reads were sampled
+
+This is PairEnd Data
+Fraction of reads failed to determine: 0.0034
+Fraction of reads explained by "1++,1--,2+-,2-+": 0.0072
+Fraction of reads explained by "1+-,1-+,2++,2--": 0.9894
+```
+
+## HISAT2 - mapeando leituras de sequenciamento
+
+```bash
+hisat2 -q --met-file SRR6357070_hisat2.metrics -p 8 --rna-strandness RF \
+ -x ../ref_genome/GCF_000146045.2/GCF_000146045.2_R64_genomic.fna \
+ -1 ../yeast_data/SRR6357070_1.nonrrna.fastq.gz \
+ -2 ../yeast_data/SRR6357070_2.nonrrna.fastq.gz -S SRR6357070_hisat2.sam
+```
 
 ## Kraken2
 
-
+Extra: PlusPFP
 
 
 
@@ -265,9 +324,11 @@ hisat2-build --exon GCF_000146045.2_R64_genomic.exons \
 
 ## HTSeq
 
+HTSeq-2.1.2
 
-
-
+```bash
+pip install HTSeq
+```
 
 ## Kallisto
 
