@@ -201,7 +201,7 @@ Usando a versão do ribodetector que não usa GPU (`ribodetector_cpu`):
 ```bash
 ribodetector_cpu -l 100 -t 10 -i SRR6357070_1_clean.fastq.gz SRR6357070_2_clean.fastq.gz \
   -o SRR6357070_1.nonrrna.fastq.gz SRR6357070_2.nonrrna.fastq.gz \
-  -e rrna --chunk_size 256
+  -e rrna --chunk_size 256 --log SRR6357070_ribodetector.log
 ```
 
 # Mapeamento de dados de expressão no genoma de levedura
