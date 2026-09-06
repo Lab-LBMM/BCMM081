@@ -199,15 +199,54 @@ pip install ribodetector
 Usando a versão do ribodetector que não usa GPU (`ribodetector_cpu`):
 
 ```bash
- ribodetector_cpu -l 100 -t 10 -i SRR6357070_1.fastq.gz SRR6357070_2.fastq.gz \
+ribodetector_cpu -l 100 -t 10 -i SRR6357070_1_clean.fastq.gz SRR6357070_2_clean.fastq.gz \
   -o SRR6357070_1.nonrrna.fastq.gz SRR6357070_2.nonrrna.fastq.gz \
   -e rrna --chunk_size 256
 ```
 
+# Mapeamento de dados de expressão no genoma de levedura
 
-## HISAT2
+## HISAT2 - informações necessárias
+
+::: {.incremental}
+- HISAT2 versão 2.2.1
+- Genoma no NCBI: GCF_000146045.2 (RefSeq)
+  - Anotação (GTF): GCF_000146045.2_R64_genomic.gtf
+  - Sequência genômica (FASTA): GCF_000146045.2_R64_genomic.fna
+- Leituras de RNA-Seq
+:::
+
+## HISAT2 - extraindo exons e sítios de splicing
+
+```bash
+hisat2_extract_exons.py GCF_000146045.2_R64_genomic.gtf > GCF_000146045.2_R64_genomic.exons
+hisat2_extract_splice_sites.py -v GCF_000146045.2_R64_genomic.gtf > GCF_000146045.2_R64_genomic.ss
+```
+
+Saída:
+
+```bash
+genes: 6477, genes with multiple isoforms: 0
+transcripts: 6477, transcript avg. length: 1380
+exons: 6846, exon avg. length: 1306
+introns: 369, intron avg. length: 307
+average number of exons per transcript: 1
+```
+
+## HISAT2 - indexando o genoma
+
+```bash
+hisat2-build --exon GCF_000146045.2_R64_genomic.exons \
+ --ss GCF_000146045.2_R64_genomic.ss -p 2 \
+ GCF_000146045.2_R64_genomic.fna GCF_000146045.2_R64_genomic.fna
+```
 
 
+## HISAT2 - mapeando leituras de sequenciamento
+
+```bash
+
+```
 
 
 ## RSeQC
