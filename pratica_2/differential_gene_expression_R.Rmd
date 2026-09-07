@@ -1,0 +1,141 @@
+---
+title: "r_dge_analysis"
+author: "Renato Augusto Correa dos Santos"
+date: "2026-09-07"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+A preparação da atividade foi realizada com base no [guia de expressão diferencial do pacote DESeq2](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
+
+## Importando os dados de contagens e metadados
+
+
+Idealmente, os diferenças fatores considerados na tabela de metadados (diferentes colunas) devem ter nomes apenas com caracteres, números, "-" ou "_". Evitar acentos ou espaços.
+
+```{r, echo=FALSE}
+metadados <- read.csv("metadata_polia.tsv", sep="\t")
+contagens_estimadas <- read.csv("polia_rap1aid_contagens.tsv.gz", sep="\t")
+
+head(metadados)
+head(contagens_estimadas, n=20)
+
+# Arredondando as contagens estimadas para o inteiro mais próximo
+contagens <- round(contagens_estimadas)
+
+head(contagens)
+```
+
+Atenção: a ordem das corridas de sequenciamento nas linhas do arquivo de metadados precisa estar na mesma ordem que as colunas na matriz de contagens.
+
+## Construindo o objeto DESeqDataSet
+
+
+O objeto DESeqDataSet armazena os dados de contagens, os fatores experimentais, bem como os resultados da modelagem com DESeq2:
+
+```{r, echo=FALSE}
+library("DESeq2")
+
+dds <- DESeqDataSetFromMatrix(countData = contagens,
+                              colData = metadados,
+                              design = ~ treatment)
+
+dds
+```
+
+## Realizando um filtro inicial nos dados de sequenciamento
+
+
+Filtro não é obrigatório, mas reduz o uso de memória do objeto (dds) além de aumentar a velocidade de processamento no DESeq2, melhorando também os gráficos.
+
+```{r, echo=FALSE}
+smallestGroupSize <- 3
+keep <- rowSums(counts(dds) >= 10) >= smallestGroupSize
+dds <- dds[keep,]
+
+dds
+```
+
+## Ordem dos níveis em fatores e nível de referência
+
+
+Alterando o nível de referência para o tratamento (por padrão, o DESeq2 vai usar o primeiro de acordo com a ordem alfabética).
+
+```{r, echo=FALSE}
+dds$treatment
+dds$treatment <- relevel(dds$treatment, ref="no_induction")
+dds$treatment
+```
+
+## O teste de expressão diferencial
+
+
+Os resultados do teste de expressão diferencial são obtidos com a função `results`.
+
+Por padrão, o fold-change e o teste p são referentes à última variável na fórmula; se a variável é um fator experimental, a comparação será do último nível vs. o nível de referência (definido anteriormente). Argumentos da função `results` podem alterar a comparação apresentada.
+
+```{r, echo=FALSE}
+dds <- DESeq(dds)
+res <- results(dds)
+res
+```
+
+O contraste pode ser feito explicitamente usando o argumento `name` ou `contrast` da função `results`. Note que os valores de log2FoldChange estarão com o sinal invertido se trocarmos a ordem no contraste:
+
+```{r, echo=FALSE}
+res <- results(dds, contrast=c("treatment","no_induction", "induction_2h"))
+res
+```
+
+
+## Visualização e ranqueamento dos resultados
+
+
+O "shrinkage" (ou encolhimento) do tamanho do efeito:
+
+```{r, echo=FALSE}
+resultsNames(dds)
+
+resLFC <- lfcShrink(dds, coef="treatment_induction_2h_vs_no_induction", type="apeglm")
+resLFC
+```
+
+
+## Ordenando os resultados
+
+
+Ordenando com base no p valor:
+
+```{r, echo=FALSE}
+resOrdered <- res[order(res$pvalue),]
+resOrdered
+```
+
+
+Contando valores com p valor ajustado abaixo de 0,1:
+
+```{r, echo=FALSE}
+sum(res$padj < 0.1, na.rm=TRUE)
+```
+
+
+Resumindo os resultados com a função `summary`:
+
+```{r, echo=FALSE}
+res05 <- results(dds, alpha=0.05)
+summary(res05)
+```
+
+```{r, echo=FALSE}
+sum(res05$padj < 0.05, na.rm=TRUE)
+```
+
+
+
+
+```{r, echo=FALSE}
+
+```
