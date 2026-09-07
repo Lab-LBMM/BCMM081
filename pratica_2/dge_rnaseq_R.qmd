@@ -215,7 +215,15 @@ done
 
 ![](fastp_insertsizeestimate.png)
 
+## FastQC - Executando em um loop após a limpeza (fastp)
 
+```bash
+for SAMPLE in SRR6357070 SRR6357071 SRR6357072 SRR6357073 SRR6357074 SRR6357075 SRR6357076 SRR6357077 SRR6357078 SRR6357079 SRR6357080 SRR6357081 SRR6357082 SRR6357083 SRR6357084 SRR6357085 SRR6357086 SRR6357087
+ do
+ fastqc "$SAMPLE"_1_clean.fastq.gz
+ fastqc "$SAMPLE"_2_clean.fastq.gz
+done
+```
 
 
 # Análise de contaminações em dados de RNA-Seq {.divider style="text-align: center;"}
