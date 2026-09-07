@@ -496,10 +496,20 @@ done
 conda deactivate
 ```
 
+## Salmon - gerando a matriz de contagens
+
+Selecionando a linhagem Rap1-AID degron com e sem indução (2 horas) e sequenciamento poliA (SRR6357082, SRR6357083, SRR6357084, SRR6357085, SRR6357086 e SRR6357087), para a geração de matriz de contagens:
+
+```bash
+salmon quantmerge --quants SRR6357082_quant SRR6357083_quant SRR6357084_quant SRR6357085_quant SRR6357086_quant SRR6357087_quant --names SRR6357082 SRR6357083 SRR6357084 SRR6357085 SRR6357086 SRR6357087 -c numreads -o polia_rap1aid_contagens.tsv
+```
+
 
 # Expressão diferencial de genes {.divider style="text-align: center;"}
 
 ## DESeq2 - instalação
+
+Pacote para testes de expressão diferencial.
 
 ```bash
 if (!require("BiocManager", quietly = TRUE))
@@ -508,8 +518,22 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("DESeq2")
 ```
 
+## apeglm - instalação
+
+Pacote para estimar o tamanho do efeito "encolhido".
+
+O apeglm (Zhu, Ibrahim, e Love, 2018) é recomendado no guia oficial do DESeq2.
+
+```bash
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("apeglm")
+```
 
 ## EdgeR - instalação
+
+Pacote para testes de expressão diferencial.
 
 ```bash
 if (!require("BiocManager", quietly = TRUE))
