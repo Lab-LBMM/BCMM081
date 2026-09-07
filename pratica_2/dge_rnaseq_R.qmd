@@ -336,6 +336,10 @@ agat_convert_sp_gff2bed.pl --gff GCF_000146045.2_R64_genomic.gff -o GCF_00014604
 
 ## RSeQC
 
+```bash
+pip install RSeQC
+```
+
 infer_experiment.py 5.05
 
 ```bash
@@ -354,6 +358,38 @@ Fraction of reads explained by "1++,1--,2+-,2-+": 0.0072
 Fraction of reads explained by "1+-,1-+,2++,2--": 0.9894
 ```
 
+bam_stat.py 5.05
+
+```bash
+bam_stat.py -h
+```
+
+```bash
+Load BAM file ...  Done
+
+#==================================================
+#All numbers are READ count
+#==================================================
+
+Total records:                          125143097
+
+QC failed:                              0
+Optical/PCR duplicate:                  0
+Non primary hits                        36838107
+Unmapped reads:                         3106438
+mapq < mapq_cut (non-unique):           8669981
+
+mapq >= mapq_cut (unique):              76528571
+Read-1:                                 38250123
+Read-2:                                 38278448
+Reads map to '+':                       38263663
+Reads map to '-':                       38264908
+Non-splice reads:                       74866883
+Splice reads:                           1661688
+Reads mapped in proper pairs:           75413158
+Proper-paired reads map to different chrom:0
+```
+
 ## HISAT2 - mapeando leituras de sequenciamento
 
 ```bash
@@ -367,7 +403,7 @@ hisat2 -q --met-file SRR6357070_hisat2.metrics -p 8 --rna-strandness RF \
 
 ## Kraken2
 
-Extra: PlusPFP
+*Extra: análise de contaminações com o banco de dados PlusPFP
 
 
 
@@ -399,6 +435,14 @@ rsem-calculate-expression --strandedness reverse -p 4 --bowtie2 \
  GCF_000146045.2_R64_genomic SRR6357070
 ```
 
+## RSEM - quantificando a expressão de várias amostras (fastp)
+
+*O ideal seria fazer a quantificação com os dados após a limpeza do ribossomal (como no exemplo acima).
+
+```bash
+
+```
+
 ## Salmon
 
 Salmon 2.0
@@ -428,8 +472,51 @@ salmon quant -l A --index index/ --output SRR6357070_quant \
  -p 2 --numBootstraps 100 --seqBias --gcBias
 ```
 
+## Salmon - quantificando a expressão de várias amostras (resultados do fastp)
+
+*O ideal seria fazer a quantificação com os dados após a limpeza do ribossomal (como no exemplo acima).
+
+```bash
+#!/bin/bash
+
+CONDA_BASE=$(conda info --base)
+source "$CONDA_BASE/etc/profile.d/conda.sh"
+
+conda activate salmon_env
+
+for SAMPLE in SRR6357070 SRR6357071 SRR6357072 SRR6357073 SRR6357074 SRR6357075 SRR6357076 SRR6357077 SRR6357078 SRR6357079 SRR6357080 SRR6357081 SRR6357082 SRR6357083 SRR6357084 SRR6357085 SRR6357086 SRR6357087
+ do
+ #ls ../yeast_data/"$SAMPLE"_1_clean.fastq.gz ../yeast_data/"$SAMPLE"_2_clean.fastq.gz
+ salmon quant -l A --index index/ --output "$SAMPLE"_quant \
+ -1 ../yeast_data/"$SAMPLE"_1_clean.fastq.gz \
+ -2 ../yeast_data/"$SAMPLE"_2_clean.fastq.gz \
+ -p 2 --numBootstraps 100 --seqBias --gcBias
+done
+
+conda deactivate
+```
+
 
 # Expressão diferencial de genes {.divider style="text-align: center;"}
+
+## DESeq2 - instalação
+
+```bash
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("DESeq2")
+```
+
+
+## EdgeR - instalação
+
+```bash
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("edgeR")
+```
 
 
 
