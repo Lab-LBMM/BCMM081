@@ -31,6 +31,17 @@ knitr:
     collapse: true
 ---
 
+<!-- Reduce code font size in revealjs slides so code fits on a single slide -->
+<style>
+.reveal pre[class*="language-"],
+.reveal code[class*="language-"],
+.reveal .sourceCode,
+.reveal .highlight {
+  font-size: 0.75em !important;
+  line-height: 1.1 !important;
+}
+</style>
+
 # Visão geral da atividade prática {.divider style="text-align: center;"}
 
 ## Panorama de análises
@@ -51,18 +62,21 @@ knitr:
 ## Dados da atividade prática {.smaller}
 
 ::: {.incremental}
-- Dados de leveduras: Wu et al. (2018)
-  - Genoma de referência: *S. cerevisiae* (montagem R64-1-1, release 90)
-  - Dados brutos de sequenciamento Illumina: 
-  - Metadados associados às amostras:
-  - Paired-end e single-end
-  - Strand-specific e unstranded
-  
+- Dados de RNA-Seq de leveduras
+- Wu et al. (2018):
+- 
+- 
 :::
 
-::: {.notes}
-Notas do apresentador ficam aqui e aparecem só na sua tela (tecla S).
-Lembrar: pedir para abrirem o RStudio ou VS Code antes de começar.
+## Dados da atividade prática {.smaller}
+
+::: {.incremental}
+- Dados de RNA-Seq
+  - Genoma de referência: *S. cerevisiae* (montagem R64-1-1, release 90)
+  - Kits: TruSeq Stranded Total RNA kit e TruSeq stranded mRNA kit (strand-specific, "reverse")
+  - Dados brutos de sequenciamento Illumina
+  - Metadados associados às amostras
+  - Paired-end
 :::
 
 # Download dos dados {.divider style="text-align: center;"}
@@ -79,14 +93,18 @@ https://trace.ncbi.nlm.nih.gov/Traces/index.html?view=run_browser&acc=SRR1039519
 ## Linha de comando do Linux com SRA Toolkit
 
 ::: {.incremental}
-- Referência: 
-- Versão: 
+- Download de dados brutos do NCBI
 :::
 
 ## Linha de comando do Linux com SRA Toolkit - Executando
 
 ```bash
-XXXX
+for srr in $(cat SraAccList.csv); do
+    echo "Processing: $srr"
+    fasterq-dump --split-files --threads 4 "$srr"
+    gzip *fastq
+    rm /home/renat/Software/sratoolkit.3.4.1-ubuntu64_cache/sra/*
+done
 ```
 
 # Explorando os metadados {.divider style="text-align: center;"}
@@ -171,7 +189,7 @@ fastp --in1 SRR6357070_1.fastq.gz --in2 SRR6357070_2.fastq.gz \
 ## fastp - Executando para múltiplas amostras com bash
 
 ```bash
-for SAMPLE in SRR6357071 SRR6357072 SRR6357073 SRR6357074 SRR6357076 SRR6357077 SRR6357078 SRR6357079 SRR6357080 SRR6357081 SRR6357082 SRR6357083 SRR6357084 SRR6357085
+for SAMPLE in SRR6357071 SRR6357072 SRR6357073 SRR6357074 SRR6357075 SRR6357076 SRR6357077 SRR6357078 SRR6357079 SRR6357080 SRR6357081 SRR6357082 SRR6357083 SRR6357084 SRR6357085 SRR6357086 SRR6357087
  do
  fastp --in1 "$SAMPLE"_1.fastq.gz --in2 "$SAMPLE"_2.fastq.gz \
   --out1 "$SAMPLE"_1_clean.fastq.gz --out2 "$SAMPLE"_2_clean.fastq.gz \
@@ -253,6 +271,7 @@ conda deactivate
 - Genoma no NCBI: GCF_000146045.2 (RefSeq)
   - Anotação (GTF): GCF_000146045.2_R64_genomic.gtf
   - Sequência genômica (FASTA): GCF_000146045.2_R64_genomic.fna
+  - Sequências de RNAs (FASTA): 
 - Leituras de RNA-Seq
 :::
 
@@ -336,7 +355,7 @@ hisat2 -q --met-file SRR6357070_hisat2.metrics -p 8 --rna-strandness RF \
  -2 ../yeast_data/SRR6357070_2.nonrrna.fastq.gz -S SRR6357070_hisat2.sam
 ```
 
-*Quantificação com HTSeq 
+*Quantificação com HTSeq
 
 ## Kraken2
 
@@ -382,12 +401,25 @@ conda activate salmon_env
 conda install -c bioconda -c conda-forge salmon
 ```
 
-## Salmon
+
+## Salmon - criando o índice com transcritos
+
+Usando transcritos gerados com RSEM:
+
+```bash
+salmon index --transcripts ../quantifying_expression/GCF_000146045.2_R64_genomic.transcripts.fa --index index
+```
+
+## Salmon - quantificando a expressão
 
 
 ```bash
-
+salmon quant -l A --index index/ --output SRR6357070_quant \
+ -1 ../yeast_data/SRR6357070_1.nonrrna.fastq.gz \
+ -2 ../yeast_data/SRR6357070_2.nonrrna.fastq.gz \
+ -p 2 --numBootstraps 100 --seqBias --gcBias
 ```
+
 
 # Expressão diferencial de genes {.divider style="text-align: center;"}
 
@@ -408,9 +440,13 @@ countdown::countdown(minutes = 5, seconds = 0, top = 0, right = 0)
 
 ## Alternativas {.smaller}
 
-- Nextflow [nf-core/rnaseq](https://github.com/nf-core/rnaseq)
+[Nextflow [nf-core/rnaseq](https://github.com/nf-core/rnaseq)]{style="text-align: center; display: block;"}
 
 ![](nfcore_rnaseq.png)
+
+::: {style="text-align: center; font-size: 0.7em;"}
+Imagem do repositório nf-core/rnaseq
+:::
 
 
 ## Para a próxima semana {.smaller}
