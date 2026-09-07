@@ -1,0 +1,19 @@
+SRA	genotype	treatment	library_type	replicate
+SRR6357070	wild-type	not applied	total RNA-Seq	biological replicate 1
+SRR6357071	wild-type	not applied	total RNA-Seq	biological replicate 2
+SRR6357072	wild-type	not applied	total RNA-Seq	biological replicate 3
+SRR6357073	Rap1-AID degron	no induction	total RNA-Seq	biological replicate 1
+SRR6357074	Rap1-AID degron	no induction	total RNA-Seq	biological replicate 2
+SRR6357075	Rap1-AID degron	no induction	total RNA-Seq	biological replicate 3
+SRR6357076	Rap1-AID degron	induction 30 minutes	total RNA-Seq	biological replicate 1
+SRR6357077	Rap1-AID degron	induction 30 minutes	total RNA-Seq	biological replicate 2
+SRR6357078	Rap1-AID degron	induction 30 minutes	total RNA-Seq	biological replicate 3
+SRR6357079	Rap1-AID degron	induction 2 hours	total RNA-Seq	biological replicate 1
+SRR6357080	Rap1-AID degron	induction 2 hours	total RNA-Seq	biological replicate 2
+SRR6357081	Rap1-AID degron	induction 2 hours	total RNA-Seq	biological replicate 3
+SRR6357082	Rap1-AID degron	no induction	polyA RNA-Seq	biological replicate 1
+SRR6357083	Rap1-AID degron	no induction	polyA RNA-Seq	biological replicate 2
+SRR6357084	Rap1-AID degron	no induction	polyA RNA-Seq	biological replicate 3
+SRR6357085	Rap1-AID degron	induction 2 hours	polyA RNA-Seq	biological replicate 1
+SRR6357086	Rap1-AID degron	induction 2 hours	polyA RNA-Seq	biological replicate 2
+SRR6357087	Rap1-AID degron	induction 2 hours	polyA RNA-Seq	biological replicate 3
