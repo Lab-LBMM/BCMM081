@@ -531,6 +531,19 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("apeglm")
 ```
 
+## vsn - instalação
+
+Pacote para 
+
+```bash
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("vsn")
+```
+
+
+
 ## EdgeR - instalação
 
 Pacote para testes de expressão diferencial.

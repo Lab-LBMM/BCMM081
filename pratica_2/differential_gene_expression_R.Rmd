@@ -133,9 +133,85 @@ summary(res05)
 sum(res05$padj < 0.05, na.rm=TRUE)
 ```
 
+## Explorando os resultados
+
+### MA-plot
+
+
+Log fold change vs. a média dos valores de expressão, com genes diferencialmente expressos (adj. p valor < 0,05) em azul.
+
+```{r, echo=FALSE}
+plotMA(res05, ylim=c(-5,5))
+```
+
+
+O plot do log2 fold change com os valores "encolhidos" é mais interessante, pois remove o ruído associado a genes com baixa expressão.
+
+```{r, echo=FALSE}
+plotMA(resLFC, ylim=c(-4,4))
+```
+
+
+### Plot counts
+
+
+Contagens para o gene com o menor valor de p valor ajustado:
+
+```{r, echo=FALSE}
+plotCounts(dds, gene=which.min(res05$padj), intgroup="treatment")
+```
+
+
+### Transformando os valores de expressão para análises exploratórias
+
+
+Variance Stabilizing Transformation (VST) é uma transformação que diminui a dependência entre média e variância (especialmente para valores baixos de expressão).
 
 
 
 ```{r, echo=FALSE}
-
+vsd <- vst(dds, blind=FALSE)
+head(assay(vsd), 3)
 ```
+
+
+
+```{r, echo=FALSE}
+# this gives log2(n + 1)
+ntd <- normTransform(dds)
+library("vsn")
+meanSdPlot(assay(ntd))
+```
+
+
+```{r, echo=FALSE}
+meanSdPlot(assay(vsd))
+```
+
+### Agrupando/clusterizando amostras para verificar a qualidade
+
+
+Explorando o agrupamento das amostras usando diferentes tipos de tranformação dos dados.
+
+```{r, echo=FALSE}
+#install.packages("pheatmap")
+library("pheatmap")
+select <- order(rowMeans(counts(dds,normalized=TRUE)),
+                decreasing=TRUE)[1:40]
+df <- as.data.frame(colData(dds)["treatment"])
+pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
+
+```{r, echo=FALSE}
+pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
+
+
+
+
+
+
+
+
