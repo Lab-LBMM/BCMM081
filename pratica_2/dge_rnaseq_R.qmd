@@ -31,7 +31,10 @@ knitr:
     collapse: true
 ---
 
+# Visão geral da atividade prática {.divider style="text-align: center;"}
+
 <!-- Reduce code font size in revealjs slides so code fits on a single slide -->
+```{=html}
 <style>
 .reveal pre[class*="language-"],
 .reveal code[class*="language-"],
@@ -41,8 +44,7 @@ knitr:
   line-height: 1.1 !important;
 }
 </style>
-
-# Visão geral da atividade prática {.divider style="text-align: center;"}
+```
 
 ## Panorama de análises
 
@@ -56,7 +58,18 @@ knitr:
 
 ::: {.incremental}
 - Sistema Operacional: Linux Ubuntu / WSL2 (no Windows)
-- Hardware: 
+- Softwares
+  - SRA Toolkit (https://github.com/ncbi/sra-tools/wiki)
+  - FastQC (https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+  - Miniconda (https://www.anaconda.com/docs/getting-started/miniconda/system-requirements)
+  - fastp (Chen et al. 2018)
+  - RiboDetector (Deng et al. 2022)
+  - HISAT2 (Kim et al. 2015)
+  - AGAT (Dainat, 2022)
+  - RSeQC (Wang et al. 2012)
+  - RSEM (Li e Dewey, 2011)
+  - Salmon (Patro et al. 2017)
+  - R/RStudio + DESeq2 (Love et al. 2014) + pheatmap () + edgeR
 :::
 
 ## Dados de RNA-Seq - Wu et al. (2018) {.smaller}
@@ -153,15 +166,6 @@ fastqc SRR6357070_2.fastq.gz
 ## FastQC - Resultados (qualidade por sequência)
 
 ![](fastqc_perseqqual.png)
-
-
-## MultiQC
-
-
-
-
-
-
 
 
 # Limpeza dos dados de sequenciamento
@@ -343,7 +347,7 @@ Gerando um arquivo BED12:
 agat_convert_sp_gff2bed.pl --gff GCF_000146045.2_R64_genomic.gff -o GCF_000146045.2_R64_genomic.bed
 ```
 
-## RSeQC
+## RSeQC - infer_experiment
 
 ```bash
 pip install RSeQC
@@ -366,6 +370,9 @@ Fraction of reads failed to determine: 0.0034
 Fraction of reads explained by "1++,1--,2+-,2-+": 0.0072
 Fraction of reads explained by "1+-,1-+,2++,2--": 0.9894
 ```
+
+## RSeQC - bam_stat
+
 
 bam_stat.py 5.05
 
@@ -444,13 +451,6 @@ rsem-calculate-expression --strandedness reverse -p 4 --bowtie2 \
  GCF_000146045.2_R64_genomic SRR6357070
 ```
 
-## RSEM - quantificando a expressão de várias amostras (fastp)
-
-*O ideal seria fazer a quantificação com os dados após a limpeza do ribossomal (como no exemplo acima).
-
-```bash
-
-```
 
 ## Salmon
 
@@ -473,13 +473,20 @@ salmon index --transcripts ../quantifying_expression/GCF_000146045.2_R64_genomic
 
 ## Salmon - quantificando a expressão
 
-
 ```bash
 salmon quant -l A --index index/ --output SRR6357070_quant \
  -1 ../yeast_data/SRR6357070_1.nonrrna.fastq.gz \
  -2 ../yeast_data/SRR6357070_2.nonrrna.fastq.gz \
  -p 2 --numBootstraps 100 --seqBias --gcBias
 ```
+
+## Salmon - quantificando a expressão
+
+*Com `-l A`, salmon também detecta automaticamente o tipo de biblioteca de sequenciamento (exemplo: "detected_library_type": "ISR", no arquivo `aux_info/meta_info.json`).
+
+![](ReadLibraryIllustration.png)
+
+https://salmon.readthedocs.io/en/latest/library_type.html
 
 ## Salmon - quantificando a expressão de várias amostras (resultados do fastp)
 
@@ -542,7 +549,7 @@ BiocManager::install("apeglm")
 
 ## vsn - instalação
 
-Pacote para 
+Pacote para transformação de dados
 
 ```bash
 if (!require("BiocManager", quietly = TRUE))
@@ -550,7 +557,6 @@ if (!require("BiocManager", quietly = TRUE))
 
 BiocManager::install("vsn")
 ```
-
 
 
 ## EdgeR - instalação
@@ -564,22 +570,7 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("edgeR")
 ```
 
-
-
-
-## Sua vez {background-color="#3D6B4A"}
-
-[Exercício · 5 minutos]{.eyebrow}
-
-1. 
-
-```{r}
-#| echo: false
-# install.packages("countdown")
-countdown::countdown(minutes = 5, seconds = 0, top = 0, right = 0)
-```
-
-## Alternativas {.smaller}
+## Alternativas - Nextflow rnseq (nf-core) {.smaller}
 
 [Nextflow [nf-core/rnaseq](https://github.com/nf-core/rnaseq)]{style="text-align: center; display: block;"}
 
@@ -592,10 +583,28 @@ Imagem do repositório nf-core/rnaseq
 
 ## Para a próxima semana {.smaller}
 
-- Relatório de aula prática
+- Relatório de aula prática (15/09)
+  - Escolher dados públicos de RNA-Seq para executar o pipeline de bioinformática e expressão diferencial;
+  - OU: Selecionar outros dados de RNA-Seq do mesmo artigo da aula prática, com novas análises (etapas do pipeline e/ou expressão diferencial);
+  - OU: Executar o mesmo pipeline, com modificações + expressão diferencial;
+  - OU: Explorar diferentes estratégias para explorar os dados de expressão diferencial (com os mesmos dados);
+  - OU: Explorar anotação funcional a partir dos resultados da aula prática (anotação e enriquecimento funcional);
+  - OU: outras ideias ?
+- Plantão de dúvidas dia 11/09, das 15h às 17h
 
-
-## Referências e recursos {.smaller}
+## Referências {.smaller}
 
 - Bharti and Grimm. **Design and Analysis of RNA Sequencing Data.** Next Generation Sequencing and Data Analysis. Cham: Springer International Publishing, 2021. 143-175. [BookChapter RNA-Seq Analyses](https://github.com/grimmlab/BookChapter-RNA-Seq-Analyses)
 - *Dados de leveduras*: [Wu, Andrew CK, et al.](https://www.cell.com/molecular-cell/fulltext/S1097-2765(18)30878-5) **Repression of Divergent Noncoding Transcription by a Sequence-Specific Transcription Factor.** Molecular Cell 72 (2018): 942-954.
+- [Zhu, Anqi, Joseph G. Ibrahim, and Michael I. Love.](https://academic.oup.com/bioinformatics/article/35/12/2084/5159452) "Heavy-tailed prior distributions for sequence count data: removing the noise and preserving large differences." Bioinformatics 35.12 (2019): 2084-2092.
+- [Chen, Shifu, et al.](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234) "fastp: an ultra-fast all-in-one FASTQ preprocessor." Bioinformatics 34.17 (2018): i884-i890.
+- [Deng, Zhi-Luo, et al.](https://academic.oup.com/nar/article/50/10/e60/6533611) "Rapid and accurate identification of ribosomal RNA sequences via deep learning." Nucleic acids research 50.10 (2022): e60-e60.
+- [Love, Michael I., Wolfgang Huber, and Simon Anders.]() "Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2." Genome biology 15.12 (2014): 550.
+
+## Mais referências {.smaller}
+
+- [Li, Bo, and Colin N. Dewey.](https://link.springer.com/article/10.1186/1471-2105-12-323) "RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome." BMC bioinformatics 12.1 (2011): 323.
+- [Patro, Rob, et al.](https://www.nature.com/articles/nmeth.4197) "Salmon provides fast and bias-aware quantification of transcript expression." Nature methods 14.4 (2017): 417-419.
+- [Kim, Daehwan, Ben Langmead, and Steven L. Salzberg.](https://www.nature.com/articles/nmeth.3317) "HISAT: a fast spliced aligner with low memory requirements." Nature methods 12.4 (2015): 357-360.
+- [Wang, Liguo, Shengqin Wang, and Wei Li.](https://academic.oup.com/bioinformatics/article/28/16/2184/325191) "RSeQC: quality control of RNA-seq experiments." Bioinformatics 28.16 (2012): 2184-2185.
+- [Dainat J. 2022](https://github.com/NBISweden/AGAT). Another Gtf/Gff Analysis Toolkit (AGAT): Resolve interoperability issues and accomplish more with your annotations. Plant and Animal Genome XXIX Conference.
