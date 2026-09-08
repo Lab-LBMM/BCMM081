@@ -188,7 +188,9 @@ meanSdPlot(assay(ntd))
 meanSdPlot(assay(vsd))
 ```
 
-### Agrupando/clusterizando amostras para verificar a qualidade
+## Agrupando/clusterizando amostras para verificar a qualidade
+
+### Heatmap (ou "mapa de calor")
 
 
 Explorando o agrupamento das amostras usando diferentes tipos de tranformação dos dados.
@@ -209,9 +211,31 @@ pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
 ```
 
 
+### Clusterização
+
+```{r, echo=FALSE}
+sampleDists <- dist(t(assay(vsd)))
+
+library("RColorBrewer")
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(vsd$treatment)
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+```
+
+
+### Análise de Componentes Principais (PCA)
 
 
 
+
+```{r, echo=FALSE}
+plotPCA(vsd, intgroup=c("treatment"))
+```
 
 
 
