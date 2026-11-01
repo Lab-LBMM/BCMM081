@@ -1,0 +1,85 @@
+/*-- scss:defaults --*/
+// "Amplicon microbiome - R" — light lecture theme, sister to the DGE RNA-Seq deck.
+// Edit the five colour variables below and the whole deck follows.
+
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Source+Sans+3:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+$ink:      #1E2328;   // main text
+$paper:    #F7F6F2;   // background
+$accent:   #2B6F77;   // headings, links, rules (deep teal)
+$accent2:  #B5652A;   // emphasis, highlighted terms (ochre)
+$muted:    #6B7378;   // captions, console output, footer
+
+$body-bg:               $paper;
+$body-color:            $ink;
+$link-color:            $accent;
+$selection-bg:          rgba($accent, .18);
+
+$font-family-sans-serif: "Source Sans 3", system-ui, sans-serif;
+$font-family-monospace:  "JetBrains Mono", ui-monospace, monospace;
+$presentation-font-size-root: 34px;
+$presentation-heading-font: "Bitter", Georgia, serif;
+$presentation-heading-color: $ink;
+$code-block-font-size: 0.72em;
+
+/*-- scss:rules --*/
+
+.reveal h1, .reveal h2 { letter-spacing: -0.01em; }
+
+// Slide titles get a hairline rule in the accent colour.
+.reveal .slide h2 {
+  padding-bottom: .18em;
+  border-bottom: 2px solid $accent;
+  margin-bottom: .6em;
+}
+
+// Section dividers: full-bleed accent. Use: ## Section {.divider .center}
+.reveal .slide.center.divider {
+  background-color: $accent;
+  color: $paper;
+  h1, h2 { color: $paper; border: none; }
+}
+
+// Code blocks sit on a white panel with a left rule.
+.reveal div.sourceCode {
+  background-color: #FFFFFF;
+  border: 1px solid rgba($ink, .10);
+  border-left: 4px solid $accent;
+  border-radius: 3px;
+  padding: .35em .2em;
+}
+
+// Printed R output, styled like console paper tape.
+.reveal pre.text-output, .reveal .cell-output pre {
+  background-color: rgba($ink, .04);
+  border: none;
+  border-left: 4px solid $muted;
+  color: $muted;
+  font-size: .68em;
+}
+
+// Highlighted code lines glow in the second accent.
+.reveal .sourceCode .code-annotation-anchor,
+.reveal pre code .highlight-line { background-color: rgba($accent2, .12); }
+
+// Small caps eyebrow for topic labels: [Topic]{.eyebrow}
+.eyebrow {
+  font-family: $font-family-monospace;
+  font-size: .5em;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: $muted;
+  display: block;
+  margin-bottom: .3em;
+}
+
+// Inline helpers: [ASV]{.term}  [optional detail]{.muted}
+.term  { color: $accent2; font-weight: 600; }
+.muted { color: $muted; }
+
+.reveal .footer       { color: $muted; font-size: .5em; }
+.reveal .slide-number { color: $muted; }
+
+// Title slide
+.reveal .quarto-title-block .title    { color: $accent; }
+.reveal .quarto-title-block .subtitle { color: $accent2; }
