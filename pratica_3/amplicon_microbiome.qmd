@@ -56,6 +56,38 @@ Vamos focar em dados de amplicons
 *Liu et al. (2025)*
 :::
 
+## Recursos computacionais {.smaller}
+
+::: {.incremental}
+- Sistema Operacional: Linux Ubuntu ou Windows
+- Softwares
+  - R 4.4 ou superior
+  - RStudio
+:::
+
+## Experimento da atividade prática {.smaller}
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+
+![](maize_cropping_fertilization_treatment_grid.png){width=100%}
+
+Ilustração criada usando Claude (Opus 5.5), a partir de [Liu, Chi, et al. 2025](https://link.springer.com/article/10.1007/s11104-024-06847-9)
+
+:::
+
+## Dados da atividade prática {.smaller}
+
+::: {.incremental}
+- Dados de amplicons
+  - Illumina NovaSeq 6000 platform
+  - Dados paired-end
+  - Gene 16S rRNA, região variável V4-V5, primers 515F e 926R
+  - Dados já processados baixados de [https://github.com/ChiLiubio/microeco_protocol_v1](https://github.com/ChiLiubio/microeco_protocol_v1) (associado ao protocolo de [Liu et al. (2025)](https://www.nature.com/articles/s41596-025-01239-4))
+  - Metadados associados às amostras baixados do mesmo repositório
+:::
+
 ## Referências {.smaller}
 
+- [Liu, Chi, et al.](https://link.springer.com/article/10.1007/s11104-024-06847-9) "Crop rotation and fertilization shape the microbiomes of maize rhizosphere soil with distinct mechanisms." Plant and Soil 507.1 (2025): 89-108.
 - [Liu, Chi, et al.](https://www.nature.com/articles/s41596-025-01239-4) "A workflow for statistical analysis and visualization of microbiome omics data using the R microeco package." Nature Protocols (2025): 1-25.
