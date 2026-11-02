@@ -37,3 +37,5 @@ Programas de semestres/anos anteriores estão no diretório `programas_disciplin
      * Exemplo script R: `operacoes_matematicas.R`
  * `pratica_2/`: Análise de expressão diferencial em R
  * `pratica_3/`: Análise de diversidade microbiana em R
+     * Slides da aula prática: `amplicon_microbiome.html`
+     * Dados da atividade prática: `dados_amplicons/` (acessar em [microeco_protocol_v1](https://github.com/ChiLiubio/microeco_protocol_v1))
