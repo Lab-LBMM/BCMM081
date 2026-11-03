@@ -152,6 +152,10 @@ head(taxonomy_table)
 ```R
 # Árvore filogenética
 tree <- ape::read.tree("dados_amplicons/QIIME2_converted/tree.nwk")
+
+# Resumo da árvore filogenética
+summary(tree)
+
 ```
 
 ## Microtable - sequências de ASVs
