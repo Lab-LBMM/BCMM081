@@ -615,6 +615,149 @@ Renato Augusto Corrêa dos Santos
 <div style="text-align: center; font-size: 0.7em;">
 <p><img data-src="Coretaxa_intersection_Genusratio.png" style="width:60.0%"></p>
 </div>
+</section><section id="calculando-a-diversidade-alfa" class="slide level2"><h2>Calculando a diversidade alfa</h2>
+<p>Curva de rarefação com base no índice de diversidade de Shannon-Weiver:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>tmp <span class="ot">&lt;-</span> trans_rarefy<span class="sc">$</span><span class="fu">new</span>(microtable_obj, <span class="at">alphadiv =</span> <span class="fu">c</span>(<span class="st">"Shannon"</span>), <span class="at">depth =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2000</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">10000</span>))</span>
+<span id="cb15-2"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_rarefy</span>(<span class="at">show_samplename =</span> <span class="cn">TRUE</span>, <span class="at">color_values =</span> <span class="fu">rep</span>(<span class="st">"grey50"</span>, <span class="dv">100</span>), <span class="at">show_legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-3"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Rarefactioncurve_Shannon.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.4</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">5</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cálculo da diversidade alfa com base na tabela de abundância após rarefação e exportação de arquivo:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>tmp_microtable <span class="ot">&lt;-</span> <span class="fu">clone</span>(amplicon_16S_microtable_rarefy)</span>
+<span id="cb16-2"><a href=""></a>tmp_microtable<span class="sc">$</span><span class="fu">cal_alphadiv</span>()</span>
+<span id="cb16-3"><a href=""></a><span class="fu">write.csv</span>(tmp_microtable<span class="sc">$</span>alpha_diversity, <span class="st">"AlphaDiv_metrics.csv"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="curva-de-rarefação-com-a-diversidade-alfa-shannon" class="slide level2"><h2>Curva de rarefação com a diversidade alfa (Shannon)</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Rarefactioncurve_Shannon.png" style="width:60.0%"></p>
+</div>
+</section><section id="comparando-tratamentos-para-cada-compartimento" class="slide level2"><h2>Comparando tratamentos para cada compartimento</h2>
+<p>Comparação usando a diversidade alfa:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>measure <span class="ot">&lt;-</span> <span class="st">"Shannon"</span></span>
+<span id="cb17-2"><a href=""></a>tmp <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp_microtable, <span class="at">group =</span> <span class="st">"Cropping"</span>, <span class="at">by_group =</span> <span class="st">"Compartment"</span>)</span>
+<span id="cb17-3"><a href=""></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">"wilcox"</span>, <span class="at">measure =</span> measure)</span>
+<span id="cb17-4"><a href=""></a><span class="fu">write.csv</span>(tmp<span class="sc">$</span>res_diff, <span class="st">"AlphaDiv_Cropping_bycompart_wilcox.csv"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O <code>P.adj</code> é o valor p após ajuste (FDR)</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> measure)</span>
+<span id="cb18-2"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Cropping_bycompart_wilcox_boxplot.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span>
+<span id="cb18-3"><a href=""></a><span class="co"># Com barra de erros e linhas</span></span>
+<span id="cb18-4"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> measure, <span class="at">plot_type =</span> <span class="st">"errorbar"</span>, <span class="at">add_line =</span> <span class="cn">TRUE</span>, <span class="at">line_type =</span> <span class="dv">2</span>)</span>
+<span id="cb18-5"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Cropping_bycompart_wilcox_errorbar_line.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="comparação-diversidade-alfa---shannon-por-compartimento" class="slide level2"><h2>Comparação diversidade alfa - Shannon (por compartimento)</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Cropping_bycompart_wilcox_boxplot.png" style="width:55.0%"></p>
+</div>
+</section><section id="comparação-diversidade-alfa---shannon-por-compartimento-1" class="slide level2"><h2>Comparação diversidade alfa - Shannon (por compartimento)</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Cropping_bycompart_wilcox_errorbar_line.png" style="width:55.0%"></p>
+</div>
+</section><section id="comparando-fertilização-por-compartimento" class="slide level2"><h2>Comparando fertilização por compartimento</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>measure <span class="ot">&lt;-</span> <span class="st">"Shannon"</span></span>
+<span id="cb19-2"><a href=""></a>tmp <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp_microtable, <span class="at">group =</span> <span class="st">"Fertilization"</span>, <span class="at">by_group =</span> <span class="st">"Compartment"</span>)</span>
+<span id="cb19-3"><a href=""></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">"wilcox"</span>, <span class="at">measure =</span> measure)</span>
+<span id="cb19-4"><a href=""></a><span class="fu">write.csv</span>(tmp<span class="sc">$</span>res_diff, <span class="st">"AlphaDiv_Fertilization_bycompart_wilcox.csv"</span>)</span>
+<span id="cb19-5"><a href=""></a><span class="co"># y_increase parameter: adjust the space of y axis among significance labels</span></span>
+<span id="cb19-6"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> measure, <span class="at">y_increase =</span> <span class="fl">0.05</span>)</span>
+<span id="cb19-7"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Fertilization_bycompart_wilcox_boxplot.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="comparando-fertilização-por-compartimento-1" class="slide level2"><h2>Comparando fertilização por compartimento</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Fertilization_bycompart_wilcox_boxplot.png" style="width:60.0%"></p>
+</div>
+</section><section id="anova-com-diversidade-alfa" class="slide level2"><h2>ANOVA com diversidade alfa</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">"anova"</span>, <span class="at">measure =</span> measure)</span>
+<span id="cb20-2"><a href=""></a><span class="fu">write.csv</span>(tmp<span class="sc">$</span>res_diff, <span class="st">"AlphaDiv_Fertilization_bycompart_anova.csv"</span>)</span>
+<span id="cb20-3"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> measure)</span>
+<span id="cb20-4"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Fertilization_bycompart_anova_boxplot.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="anova-com-diversidade-alfa-1" class="slide level2"><h2>ANOVA com diversidade alfa</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Fertilization_bycompart_anova_boxplot.png" style="width:60.0%"></p>
+</div>
+</section><section id="teste-kruskal-wallis-com-comparações-múltiplas-de-dunn" class="slide level2"><h2>Teste Kruskal-Wallis com comparações múltiplas de Dunn</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">"KW_dunn"</span>, <span class="at">measure =</span> measure, <span class="at">KW_dunn_letter =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-2"><a href=""></a><span class="fu">write.csv</span>(tmp<span class="sc">$</span>res_diff, <span class="st">"AlphaDiv_Fertilization_bycompart_KW_dunn.csv"</span>)</span>
+<span id="cb21-3"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">measure =</span> measure)</span>
+<span id="cb21-4"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Fertilization_bycompart_KW_dunn_boxplot.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="teste-kruskal-wallis-com-comparações-múltiplas-de-dunn-1" class="slide level2"><h2>Teste Kruskal-Wallis com comparações múltiplas de Dunn</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Fertilization_bycompart_KW_dunn_boxplot.png" style="width:60.0%"></p>
+</div>
+</section><section id="teste-kruskal-wallis-com-comparações-múltiplas-de-dunn-endofítico" class="slide level2"><h2>Teste Kruskal-Wallis com comparações múltiplas de Dunn (endofítico)</h2>
+<p>Selecionando apenas um compartimento (endofítico):</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>tmp_microtable_endophyte <span class="ot">&lt;-</span> <span class="fu">clone</span>(tmp_microtable)</span>
+<span id="cb22-2"><a href=""></a>tmp_microtable_endophyte<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Compartment <span class="sc">==</span> <span class="st">"Endophyte"</span>, ]</span>
+<span id="cb22-3"><a href=""></a>tmp_microtable_endophyte<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb22-4"><a href=""></a></span>
+<span id="cb22-5"><a href=""></a>tmp <span class="ot">&lt;-</span> trans_alpha<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp_microtable_endophyte, <span class="at">group =</span> <span class="st">"Fertilization"</span>)</span>
+<span id="cb22-6"><a href=""></a>tmp<span class="sc">$</span><span class="fu">cal_diff</span>(<span class="at">method =</span> <span class="st">"KW_dunn"</span>, <span class="at">KW_dunn_letter =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-7"><a href=""></a><span class="fu">write.csv</span>(tmp<span class="sc">$</span>res_diff, <span class="st">"AlphaDiv_Fertilization_KW_dunn_Endophyte.csv"</span>)</span>
+<span id="cb22-8"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_alpha</span>(<span class="at">plot_type =</span> <span class="st">"ggdotplot"</span>, <span class="at">fill =</span> <span class="st">"Fertilization"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">y_increase =</span> <span class="fl">0.4</span>, <span class="at">add =</span> <span class="st">"mean_se"</span>, <span class="at">xtext_angle =</span> <span class="dv">0</span>, <span class="at">add_sig_text_size =</span> <span class="dv">5</span>)</span>
+<span id="cb22-9"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Fertilization_KW_dunn_Endophyte.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="teste-kruskal-wallis-com-comparações-múltiplas-de-dunn-endofítico-1" class="slide level2"><h2>Teste Kruskal-Wallis com comparações múltiplas de Dunn (endofítico)</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Fertilization_KW_dunn_Endophyte.png" style="width:60.0%"></p>
+</div>
+</section><section id="correlações-entre-diversidade-alfa-e-variáveis-ambientais-solo" class="slide level2"><h2>Correlações entre diversidade alfa e variáveis ambientais (solo)</h2>
+<p>Selecionando apenas solo:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>tmp_microtable_bulksoil <span class="ot">&lt;-</span> <span class="fu">clone</span>(tmp_microtable)</span>
+<span id="cb23-2"><a href=""></a>tmp_microtable_bulksoil<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Compartment <span class="sc">==</span> <span class="st">"Bulk soil"</span>, ]</span>
+<span id="cb23-3"><a href=""></a>tmp_microtable_bulksoil<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb23-4"><a href=""></a></span>
+<span id="cb23-5"><a href=""></a>tmp <span class="ot">&lt;-</span> trans_env<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp_microtable_bulksoil, <span class="at">env_cols =</span> <span class="dv">9</span><span class="sc">:</span><span class="dv">21</span>)</span>
+<span id="cb23-6"><a href=""></a>tmp<span class="sc">$</span><span class="fu">cal_cor</span>(<span class="at">add_abund_table =</span> tmp_microtable_bulksoil<span class="sc">$</span>alpha_diversity, <span class="at">method =</span> <span class="st">"pearson"</span>)</span>
+<span id="cb23-7"><a href=""></a><span class="fu">write.csv</span>(tmp<span class="sc">$</span>res_cor, <span class="st">"AlphaDiv_Env_bulksoil_correlation.csv"</span>)</span>
+<span id="cb23-8"><a href=""></a>g1 <span class="ot">&lt;-</span> tmp<span class="sc">$</span><span class="fu">plot_cor</span>()</span>
+<span id="cb23-9"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"AlphaDiv_Env_bulksoil_correlation.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="correlações-entre-diversidade-alfa-e-variáveis-ambientais-solo-1" class="slide level2"><h2>Correlações entre diversidade alfa e variáveis ambientais (solo)</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p><img data-src="AlphaDiv_Env_bulksoil_correlation.png" style="width:55.0%"></p>
+</div>
+</section><section id="análises-de-diversidade-beta" class="slide level2"><h2>Análises de diversidade beta</h2>
+<p>Selecionando amostras de rizosfera do solo dos dados originais e após rarefação:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>tmp_microtable_rhizo <span class="ot">&lt;-</span> <span class="fu">clone</span>(microtable_obj)</span>
+<span id="cb24-2"><a href=""></a>tmp_microtable_rhizo<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Compartment <span class="sc">==</span> <span class="st">"Rhizosphere"</span>, ]</span>
+<span id="cb24-3"><a href=""></a>tmp_microtable_rhizo<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span>
+<span id="cb24-4"><a href=""></a></span>
+<span id="cb24-5"><a href=""></a>tmp_microtable_rarefy_rhizo <span class="ot">&lt;-</span> <span class="fu">clone</span>(amplicon_16S_microtable_rarefy)</span>
+<span id="cb24-6"><a href=""></a>tmp_microtable_rarefy_rhizo<span class="sc">$</span>sample_table <span class="sc">%&lt;&gt;%</span> .[.<span class="sc">$</span>Compartment <span class="sc">==</span> <span class="st">"Rhizosphere"</span>, ]</span>
+<span id="cb24-7"><a href=""></a>tmp_microtable_rarefy_rhizo<span class="sc">$</span><span class="fu">tidy_dataset</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="análises-de-diversidade-beta-1" class="slide level2"><h2>Análises de diversidade beta</h2>
+<p>Dissimilaridade de Bray-Curtis e UniFrac (rarefação)</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>measure <span class="ot">&lt;-</span> <span class="st">"bray"</span></span>
+<span id="cb25-2"><a href=""></a>tmp_microtable_rarefy_rhizo<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> measure, <span class="at">unifrac =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-3"><a href=""></a><span class="fu">write.csv</span>(tmp_microtable_rarefy_rhizo<span class="sc">$</span>beta_diversity[[measure]], <span class="st">"BetaDiv_rarefy_rhizo_bray.csv"</span>)</span>
+<span id="cb25-4"><a href=""></a><span class="fu">write.csv</span>(tmp_microtable_rarefy_rhizo<span class="sc">$</span>beta_diversity<span class="sc">$</span>wei_unifrac, <span class="st">"BetaDiv_rarefy_rhizo_weightedUniFrac.csv"</span>)</span>
+<span id="cb25-5"><a href=""></a><span class="fu">write.csv</span>(tmp_microtable_rarefy_rhizo<span class="sc">$</span>beta_diversity<span class="sc">$</span>unwei_unifrac, <span class="st">"BetaDiv_rarefy_rhizo_unweightedUniFrac.csv"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Distância de Jaccard (dados de presença/ausência - binário) (rarefação):</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>measure <span class="ot">&lt;-</span> <span class="st">"jaccard"</span></span>
+<span id="cb26-2"><a href=""></a>tmp_microtable_rarefy_rhizo<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> measure)</span>
+<span id="cb26-3"><a href=""></a><span class="fu">write.csv</span>(tmp_microtable_rarefy_rhizo<span class="sc">$</span>beta_diversity[[measure]], <span class="st">"BetaDiv_rarefy_rhizo_jaccard_binary.csv"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dissimilaridade de Aitchison (dados de rizosfera) (SEM rarefação):</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>measure <span class="ot">&lt;-</span> <span class="st">"aitchison"</span></span>
+<span id="cb27-2"><a href=""></a>tmp_microtable_rhizo<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> measure)</span>
+<span id="cb27-3"><a href=""></a><span class="fu">write.csv</span>(tmp_microtable_rhizo<span class="sc">$</span>beta_diversity[[measure]], <span class="st">"BetaDiv_rarefy_rhizo_aitchison.csv"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="análises-de-diversidade-beta---pcoa" class="slide level2"><h2>Análises de diversidade beta - PCoA</h2>
+<p>Bray-Curtis com dados de rarefação:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>measure <span class="ot">&lt;-</span> <span class="st">"bray"</span></span>
+<span id="cb28-2"><a href=""></a>tmp_microtable_rarefy_rhizo<span class="sc">$</span><span class="fu">cal_betadiv</span>(<span class="at">method =</span> measure)</span>
+<span id="cb28-3"><a href=""></a>t1 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp_microtable_rarefy_rhizo, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">measure =</span> measure)</span>
+<span id="cb28-4"><a href=""></a>t1<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">"PCoA"</span>, <span class="at">ncomp =</span> <span class="dv">2</span>)</span>
+<span id="cb28-5"><a href=""></a><span class="fu">write.csv</span>(t1<span class="sc">$</span>res_ordination<span class="sc">$</span>scores, <span class="st">"BetaDiv_Rhizo_rarefy_PCoA_Bray_Score.csv"</span>)</span>
+<span id="cb28-6"><a href=""></a>g1 <span class="ot">&lt;-</span> t1<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">"Group"</span>, <span class="at">plot_shape =</span> <span class="st">"Group"</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">"point"</span>, <span class="st">"ellipse"</span>))</span>
+<span id="cb28-7"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"BetaDiv_Rhizo_rarefy_PCoA_Bray.png"</span>, g1, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Aitchison com dados antes da rarefação:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>measure <span class="ot">&lt;-</span> <span class="st">"aitchison"</span></span>
+<span id="cb29-2"><a href=""></a>t2 <span class="ot">&lt;-</span> trans_beta<span class="sc">$</span><span class="fu">new</span>(<span class="at">dataset =</span> tmp_microtable_rhizo, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">measure =</span> measure)</span>
+<span id="cb29-3"><a href=""></a>t2<span class="sc">$</span><span class="fu">cal_ordination</span>(<span class="at">method =</span> <span class="st">"PCoA"</span>, <span class="at">ncomp =</span> <span class="dv">2</span>)</span>
+<span id="cb29-4"><a href=""></a><span class="fu">write.csv</span>(t2<span class="sc">$</span>res_ordination<span class="sc">$</span>scores, <span class="st">"BetaDiv_Rhizo_nonrarefy_PCoA_Aitchison_Score.csv"</span>)</span>
+<span id="cb29-5"><a href=""></a>g2 <span class="ot">&lt;-</span> t2<span class="sc">$</span><span class="fu">plot_ordination</span>(<span class="at">plot_color =</span> <span class="st">"Group"</span>, <span class="at">plot_shape =</span> <span class="st">"Group"</span>, <span class="at">plot_type =</span> <span class="fu">c</span>(<span class="st">"point"</span>, <span class="st">"ellipse"</span>))</span>
+<span id="cb29-6"><a href=""></a>cowplot<span class="sc">::</span><span class="fu">save_plot</span>(<span class="st">"BetaDiv_Rhizo_nonrarefy_PCoA_Aitchison.png"</span>, g2, <span class="at">base_aspect_ratio =</span> <span class="fl">1.2</span>, <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">base_height =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="bray-curtis-com-dados-de-rarefação" class="slide level2"><h2>Bray-Curtis com dados de rarefação</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p>Figura 3A do protocolo de Liu et al.&nbsp;(2025):</p>
+<p><img data-src="BetaDiv_Rhizo_rarefy_PCoA_Bray.png" style="width:55.0%"></p>
+</div>
+</section><section id="aitchison-com-dados-antes-da-rarefação" class="slide level2"><h2>Aitchison com dados antes da rarefação</h2>
+<div style="text-align: center; font-size: 0.7em;">
+<p>Figura 3B do protocolo de Liu et al.&nbsp;(2025):</p>
+<p><img data-src="BetaDiv_Rhizo_nonrarefy_PCoA_Aitchison.png" style="width:55.0%"></p>
+</div>
 </section><section id="referências" class="slide level2 smaller"><h2>Referências</h2>
 <ul>
 <li><a href="https://cran.r-project.org/web/packages/microeco/index.html">Página CRAN do pacote microeco</a></li>

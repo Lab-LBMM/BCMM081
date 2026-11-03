@@ -325,6 +325,262 @@ cowplot::save_plot("Coretaxa_intersection_Genusratio.png", g2, base_aspect_ratio
 
 :::
 
+## Calculando a diversidade alfa
+
+Curva de rarefação com base no índice de diversidade de Shannon-Weiver:
+
+```R
+tmp <- trans_rarefy$new(microtable_obj, alphadiv = c("Shannon"), depth = c(0, 10, 50, 500, 1000, 2000, 4000, 6000, 10000))
+g1 <- tmp$plot_rarefy(show_samplename = TRUE, color_values = rep("grey50", 100), show_legend = FALSE)
+cowplot::save_plot("AlphaDiv_Rarefactioncurve_Shannon.png", g1, base_aspect_ratio = 1.4, dpi = 300, base_height = 5)
+```
+
+Cálculo da diversidade alfa com base na tabela de abundância após rarefação e exportação de arquivo:
+
+```R
+tmp_microtable <- clone(amplicon_16S_microtable_rarefy)
+tmp_microtable$cal_alphadiv()
+write.csv(tmp_microtable$alpha_diversity, "AlphaDiv_metrics.csv")
+```
+
+## Curva de rarefação com a diversidade alfa (Shannon)
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Rarefactioncurve_Shannon.png){width=60%}
+
+:::
+
+## Comparando tratamentos para cada compartimento
+
+Comparação usando a diversidade alfa:
+
+```R
+measure <- "Shannon"
+tmp <- trans_alpha$new(dataset = tmp_microtable, group = "Cropping", by_group = "Compartment")
+tmp$cal_diff(method = "wilcox", measure = measure)
+write.csv(tmp$res_diff, "AlphaDiv_Cropping_bycompart_wilcox.csv")
+```
+
+O `P.adj` é o valor p após ajuste (FDR)
+
+```R
+g1 <- tmp$plot_alpha(measure = measure)
+cowplot::save_plot("AlphaDiv_Cropping_bycompart_wilcox_boxplot.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+# Com barra de erros e linhas
+g1 <- tmp$plot_alpha(measure = measure, plot_type = "errorbar", add_line = TRUE, line_type = 2)
+cowplot::save_plot("AlphaDiv_Cropping_bycompart_wilcox_errorbar_line.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+## Comparação diversidade alfa - Shannon (por compartimento)
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Cropping_bycompart_wilcox_boxplot.png){width=55%}
+
+:::
+
+## Comparação diversidade alfa - Shannon (por compartimento)
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Cropping_bycompart_wilcox_errorbar_line.png){width=55%}
+
+:::
+
+## Comparando fertilização por compartimento
+
+```R
+measure <- "Shannon"
+tmp <- trans_alpha$new(dataset = tmp_microtable, group = "Fertilization", by_group = "Compartment")
+tmp$cal_diff(method = "wilcox", measure = measure)
+write.csv(tmp$res_diff, "AlphaDiv_Fertilization_bycompart_wilcox.csv")
+# y_increase parameter: adjust the space of y axis among significance labels
+g1 <- tmp$plot_alpha(measure = measure, y_increase = 0.05)
+cowplot::save_plot("AlphaDiv_Fertilization_bycompart_wilcox_boxplot.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+## Comparando fertilização por compartimento
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Fertilization_bycompart_wilcox_boxplot.png){width=60%}
+
+:::
+
+## ANOVA com diversidade alfa
+
+```R
+tmp$cal_diff(method = "anova", measure = measure)
+write.csv(tmp$res_diff, "AlphaDiv_Fertilization_bycompart_anova.csv")
+g1 <- tmp$plot_alpha(measure = measure)
+cowplot::save_plot("AlphaDiv_Fertilization_bycompart_anova_boxplot.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+## ANOVA com diversidade alfa
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Fertilization_bycompart_anova_boxplot.png){width=60%}
+
+:::
+
+## Teste Kruskal-Wallis com comparações múltiplas de Dunn
+
+```R
+tmp$cal_diff(method = "KW_dunn", measure = measure, KW_dunn_letter = TRUE)
+write.csv(tmp$res_diff, "AlphaDiv_Fertilization_bycompart_KW_dunn.csv")
+g1 <- tmp$plot_alpha(measure = measure)
+cowplot::save_plot("AlphaDiv_Fertilization_bycompart_KW_dunn_boxplot.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+## Teste Kruskal-Wallis com comparações múltiplas de Dunn
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Fertilization_bycompart_KW_dunn_boxplot.png){width=60%}
+
+:::
+
+## Teste Kruskal-Wallis com comparações múltiplas de Dunn (endofítico)
+
+Selecionando apenas um compartimento (endofítico):
+
+```R
+tmp_microtable_endophyte <- clone(tmp_microtable)
+tmp_microtable_endophyte$sample_table %<>% .[.$Compartment == "Endophyte", ]
+tmp_microtable_endophyte$tidy_dataset()
+
+tmp <- trans_alpha$new(dataset = tmp_microtable_endophyte, group = "Fertilization")
+tmp$cal_diff(method = "KW_dunn", KW_dunn_letter = TRUE)
+write.csv(tmp$res_diff, "AlphaDiv_Fertilization_KW_dunn_Endophyte.csv")
+g1 <- tmp$plot_alpha(plot_type = "ggdotplot", fill = "Fertilization", alpha = 0.3, size = 2, y_increase = 0.4, add = "mean_se", xtext_angle = 0, add_sig_text_size = 5)
+cowplot::save_plot("AlphaDiv_Fertilization_KW_dunn_Endophyte.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+## Teste Kruskal-Wallis com comparações múltiplas de Dunn (endofítico)
+
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Fertilization_KW_dunn_Endophyte.png){width=60%}
+
+:::
+
+## Correlações entre diversidade alfa e variáveis ambientais (solo)
+
+Selecionando apenas solo:
+
+```R
+tmp_microtable_bulksoil <- clone(tmp_microtable)
+tmp_microtable_bulksoil$sample_table %<>% .[.$Compartment == "Bulk soil", ]
+tmp_microtable_bulksoil$tidy_dataset()
+
+tmp <- trans_env$new(dataset = tmp_microtable_bulksoil, env_cols = 9:21)
+tmp$cal_cor(add_abund_table = tmp_microtable_bulksoil$alpha_diversity, method = "pearson")
+write.csv(tmp$res_cor, "AlphaDiv_Env_bulksoil_correlation.csv")
+g1 <- tmp$plot_cor()
+cowplot::save_plot("AlphaDiv_Env_bulksoil_correlation.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+## Correlações entre diversidade alfa e variáveis ambientais (solo)
+
+::: {style="text-align: center; font-size: 0.7em;"}
+
+![](AlphaDiv_Env_bulksoil_correlation.png){width=55%}
+
+:::
+
+## Análises de diversidade beta
+
+Selecionando amostras de rizosfera do solo dos dados originais e após rarefação:
+
+```R
+tmp_microtable_rhizo <- clone(microtable_obj)
+tmp_microtable_rhizo$sample_table %<>% .[.$Compartment == "Rhizosphere", ]
+tmp_microtable_rhizo$tidy_dataset()
+
+tmp_microtable_rarefy_rhizo <- clone(amplicon_16S_microtable_rarefy)
+tmp_microtable_rarefy_rhizo$sample_table %<>% .[.$Compartment == "Rhizosphere", ]
+tmp_microtable_rarefy_rhizo$tidy_dataset()
+```
+
+## Análises de diversidade beta
+
+Dissimilaridade de Bray-Curtis e UniFrac (rarefação)
+
+```R
+measure <- "bray"
+tmp_microtable_rarefy_rhizo$cal_betadiv(method = measure, unifrac = TRUE)
+write.csv(tmp_microtable_rarefy_rhizo$beta_diversity[[measure]], "BetaDiv_rarefy_rhizo_bray.csv")
+write.csv(tmp_microtable_rarefy_rhizo$beta_diversity$wei_unifrac, "BetaDiv_rarefy_rhizo_weightedUniFrac.csv")
+write.csv(tmp_microtable_rarefy_rhizo$beta_diversity$unwei_unifrac, "BetaDiv_rarefy_rhizo_unweightedUniFrac.csv")
+```
+
+Distância de Jaccard (dados de presença/ausência - binário) (rarefação):
+
+```R
+measure <- "jaccard"
+tmp_microtable_rarefy_rhizo$cal_betadiv(method = measure)
+write.csv(tmp_microtable_rarefy_rhizo$beta_diversity[[measure]], "BetaDiv_rarefy_rhizo_jaccard_binary.csv")
+```
+
+Dissimilaridade de Aitchison (dados de rizosfera) (SEM rarefação):
+
+```R
+measure <- "aitchison"
+tmp_microtable_rhizo$cal_betadiv(method = measure)
+write.csv(tmp_microtable_rhizo$beta_diversity[[measure]], "BetaDiv_rarefy_rhizo_aitchison.csv")
+```
+
+## Análises de diversidade beta - PCoA
+
+Bray-Curtis com dados de rarefação:
+
+```R
+measure <- "bray"
+tmp_microtable_rarefy_rhizo$cal_betadiv(method = measure)
+t1 <- trans_beta$new(dataset = tmp_microtable_rarefy_rhizo, group = "Group", measure = measure)
+t1$cal_ordination(method = "PCoA", ncomp = 2)
+write.csv(t1$res_ordination$scores, "BetaDiv_Rhizo_rarefy_PCoA_Bray_Score.csv")
+g1 <- t1$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse"))
+cowplot::save_plot("BetaDiv_Rhizo_rarefy_PCoA_Bray.png", g1, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+Aitchison com dados antes da rarefação:
+
+```R
+measure <- "aitchison"
+t2 <- trans_beta$new(dataset = tmp_microtable_rhizo, group = "Group", measure = measure)
+t2$cal_ordination(method = "PCoA", ncomp = 2)
+write.csv(t2$res_ordination$scores, "BetaDiv_Rhizo_nonrarefy_PCoA_Aitchison_Score.csv")
+g2 <- t2$plot_ordination(plot_color = "Group", plot_shape = "Group", plot_type = c("point", "ellipse"))
+cowplot::save_plot("BetaDiv_Rhizo_nonrarefy_PCoA_Aitchison.png", g2, base_aspect_ratio = 1.2, dpi = 300, base_height = 6)
+```
+
+## Bray-Curtis com dados de rarefação
+
+::: {style="text-align: center; font-size: 0.7em;"}
+Figura 3A do protocolo de Liu et al. (2025):
+
+![](BetaDiv_Rhizo_rarefy_PCoA_Bray.png){width=55%}
+
+:::
+
+
+## Aitchison com dados antes da rarefação
+
+::: {style="text-align: center; font-size: 0.7em;"}
+Figura 3B do protocolo de Liu et al. (2025):
+
+![](BetaDiv_Rhizo_nonrarefy_PCoA_Aitchison.png){width=55%}
+
+:::
+
+
+
+
+
 
 ## Referências {.smaller}
 
